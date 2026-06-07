@@ -89,7 +89,7 @@ Settings → Actions → General → Workflow permissions → "Read and write pe
 
 **2. Add Secrets**
 
-Settings → Secrets and variables → Actions:
+Settings → Environments → release-signing → Environment secrets:
 
 | Secret                               | Value                                                               |
 | ------------------------------------ | ------------------------------------------------------------------- |
