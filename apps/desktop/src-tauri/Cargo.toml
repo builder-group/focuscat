@@ -1,6 +1,6 @@
 [package]
 name = "desktop"
-version = "0.0.47"
+version = "0.0.48"
 description = ""
 authors = { workspace = true }
 license = { workspace = true }
