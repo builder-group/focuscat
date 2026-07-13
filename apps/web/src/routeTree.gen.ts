@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HelpIndexRouteImport } from './routes/help/index'
 import { Route as SitesPomodorocatIndexRouteImport } from './routes/sites.pomodorocat/index'
@@ -20,6 +22,16 @@ import { Route as SitesPomodorocatRobotsDottxtRouteImport } from './routes/sites
 import { Route as SitesPomodorocatBlogIndexRouteImport } from './routes/sites.pomodorocat.blog/index'
 import { Route as SitesPomodorocatBlogSlugIndexRouteImport } from './routes/sites.pomodorocat.blog.$slug/index'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -77,6 +89,8 @@ const SitesPomodorocatBlogSlugIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/help/': typeof HelpIndexRoute
   '/sites/pomodorocat/robots.txt': typeof SitesPomodorocatRobotsDottxtRoute
   '/sites/pomodorocat/sitemap.xml': typeof SitesPomodorocatSitemapDotxmlRoute
@@ -89,6 +103,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/help': typeof HelpIndexRoute
   '/sites/pomodorocat/robots.txt': typeof SitesPomodorocatRobotsDottxtRoute
   '/sites/pomodorocat/sitemap.xml': typeof SitesPomodorocatSitemapDotxmlRoute
@@ -102,6 +118,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/help/': typeof HelpIndexRoute
   '/sites/pomodorocat/robots.txt': typeof SitesPomodorocatRobotsDottxtRoute
   '/sites/pomodorocat/sitemap.xml': typeof SitesPomodorocatSitemapDotxmlRoute
@@ -116,6 +134,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/help/'
     | '/sites/pomodorocat/robots.txt'
     | '/sites/pomodorocat/sitemap.xml'
@@ -128,6 +148,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/help'
     | '/sites/pomodorocat/robots.txt'
     | '/sites/pomodorocat/sitemap.xml'
@@ -140,6 +162,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/help/'
     | '/sites/pomodorocat/robots.txt'
     | '/sites/pomodorocat/sitemap.xml'
@@ -153,6 +177,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   HelpIndexRoute: typeof HelpIndexRoute
   SitesPomodorocatRobotsDottxtRoute: typeof SitesPomodorocatRobotsDottxtRoute
   SitesPomodorocatSitemapDotxmlRoute: typeof SitesPomodorocatSitemapDotxmlRoute
@@ -166,6 +192,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -241,6 +281,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   HelpIndexRoute: HelpIndexRoute,
   SitesPomodorocatRobotsDottxtRoute: SitesPomodorocatRobotsDottxtRoute,
   SitesPomodorocatSitemapDotxmlRoute: SitesPomodorocatSitemapDotxmlRoute,

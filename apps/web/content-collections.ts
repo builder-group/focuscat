@@ -10,6 +10,7 @@ const pomodorocatBlog = defineCollection({
 		title: v.string(),
 		summary: v.string(),
 		published: v.string(),
+		updated: v.optional(v.string()),
 		content: v.string()
 	}),
 	transform: async (document, context) => {

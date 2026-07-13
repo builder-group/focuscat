@@ -11,28 +11,50 @@ export const Route = createFileRoute('/')({
 	loader: () => fetchLatestRelease(),
 	head: () => ({
 		meta: [
-			{ title: 'FocusCat — Focus timer with a cat companion for Mac' },
+			{ title: 'FocusCat: Free Pomodoro Timer and App Blocker for Mac' },
 			{
 				name: 'description',
 				content:
-					'Offline-first focus timer for Mac. Pomodoro sessions, activity tracking, app blocking. No accounts, open source.'
+					'A free, open-source Pomodoro timer for Mac with app blocking, activity tracking, focus profiles, and a cat companion. No account or subscription.'
 			},
-			{ property: 'og:title', content: 'FocusCat — Focus timer with a cat companion for Mac' },
+			{ property: 'og:title', content: 'FocusCat: Free Pomodoro Timer and App Blocker for Mac' },
 			{
 				property: 'og:description',
 				content:
-					'Offline-first focus timer for Mac. Pomodoro sessions, activity tracking, app blocking. No accounts, open source.'
+					'A free Pomodoro timer for Mac with app blocking, activity tracking, focus profiles, and a cat companion.'
 			},
 			{ property: 'og:type', content: 'website' },
+			{ property: 'og:url', content: 'https://focuscat.app/' },
 			{ property: 'og:image', content: `${appConfig.distribution.website}/og-focuscat.png` },
 			{ name: 'twitter:card', content: 'summary_large_image' },
-			{ name: 'twitter:title', content: 'FocusCat — Focus timer with a cat companion for Mac' },
+			{ name: 'twitter:title', content: 'FocusCat: Free Pomodoro Timer and App Blocker for Mac' },
 			{
 				name: 'twitter:description',
 				content:
-					'Offline-first focus timer for Mac. Pomodoro sessions, activity tracking, app blocking. No accounts, open source.'
+					'A free Pomodoro timer for Mac with app blocking, activity tracking, focus profiles, and a cat companion.'
 			},
 			{ name: 'twitter:image', content: `${appConfig.distribution.website}/og-focuscat.png` }
+		],
+		links: [{ rel: 'canonical', href: 'https://focuscat.app/' }],
+		scripts: [
+			{
+				type: 'application/ld+json',
+				children: JSON.stringify({
+					'@context': 'https://schema.org',
+					'@type': 'SoftwareApplication',
+					'name': 'FocusCat',
+					'url': 'https://focuscat.app/',
+					'description':
+						'An offline-first focus timer for Mac with Pomodoro sessions, activity tracking, app blocking, and a cat companion.',
+					'applicationCategory': 'ProductivityApplication',
+					'operatingSystem': 'macOS 12 or later',
+					'offers': {
+						'@type': 'Offer',
+						'price': '0',
+						'priceCurrency': 'USD'
+					}
+				})
+			}
 		]
 	}),
 	component: RouteComponent
@@ -84,6 +106,7 @@ function RouteComponent() {
 						Focus timer with a cat <br className="hidden sm:block" />
 						companion for{' '}
 						<AppleIcon className="xs:size-10 mb-3 inline-block size-8 sm:mb-5 md:size-12" />
+						<span className="sr-only">Mac</span>
 					</h1>
 					<div className="mb-16 flex flex-col items-center gap-2 sm:mb-20">
 						<div className="flex flex-wrap items-center justify-center gap-3">
@@ -145,10 +168,10 @@ function RouteComponent() {
 				<div className="animate-fade-in-delay mt-16 flex w-full max-w-[840px] flex-col px-8 text-left opacity-0 sm:mt-20 sm:text-center">
 					<div className="mb-12 flex flex-col gap-4 font-serif text-3xl leading-tight tracking-[-0.008em] sm:mb-14 sm:text-4xl">
 						<p>
-							FocusCat is an offline-first focus timer for Mac. It helps you stay productive with
-							pomodoro sessions, activity tracking, and app blocking.
+							FocusCat is a free, offline-first Pomodoro timer for Mac. It blocks distracting apps
+							during focus sessions and shows how you spent your time.
 						</p>
-						<p>No accounts or subscriptions. Plus, it's lightweight and open source.</p>
+						<p>No account or subscription. FocusCat is lightweight, private, and open source.</p>
 					</div>
 					<div className="mb-16 flex flex-wrap justify-center gap-2 sm:mb-24 sm:gap-2.5">
 						{tags.map((tag) => (

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { allPomodorocatBlogs } from 'content-collections';
-import React from 'react';
+import { PomodoroCatBlogHeader, PomodoroCatTimerCta } from '@/components';
 
 export const Route = createFileRoute('/sites/pomodorocat/blog/')({
 	loader: () =>
@@ -9,13 +9,22 @@ export const Route = createFileRoute('/sites/pomodorocat/blog/')({
 		),
 	head: () => ({
 		meta: [
-			{ title: 'Blog — Pomodoro Cat' },
+			{ title: 'Pomodoro Guides and Focus Tips: Pomodoro Cat' },
 			{
 				name: 'description',
 				content:
-					'Guides and articles about the Pomodoro Technique, staying focused, and getting the most out of Pomodoro Cat.'
-			}
-		]
+					'Practical guides to Pomodoro sessions, focus intervals, and getting more from the free Pomodoro Cat timer.'
+			},
+			{ property: 'og:title', content: 'Pomodoro Guides and Focus Tips: Pomodoro Cat' },
+			{
+				property: 'og:description',
+				content:
+					'Practical guides to Pomodoro sessions, focus intervals, and getting more from the free Pomodoro Cat timer.'
+			},
+			{ property: 'og:type', content: 'website' },
+			{ property: 'og:url', content: 'https://pomodorocat.com/blog' }
+		],
+		links: [{ rel: 'canonical', href: 'https://pomodorocat.com/blog' }]
 	}),
 	component: RouteComponent
 });
@@ -25,46 +34,48 @@ function RouteComponent() {
 
 	return (
 		<>
-			<Header />
+			<PomodoroCatBlogHeader showGuidesLink={false} />
 
 			<main className="mx-auto max-w-2xl px-6 py-12">
-				<h1 className="mb-10 text-3xl font-semibold tracking-tight">Blog</h1>
+				<h1 className="text-3xl font-semibold tracking-tight">Pomodoro guides</h1>
+				<p className="text-base-600 mt-3 max-w-xl leading-relaxed">
+					Practical guides for planning focus sessions, choosing useful intervals, and making timed
+					work easier to repeat.
+				</p>
 
-				<div className="space-y-8">
+				<div className="mt-12 space-y-2">
 					{posts.map((post) => (
 						<article key={post._meta.path}>
-							<a href={`/blog/${post._meta.path}`} className="group block">
-								<p className="text-base-400 mb-1 text-xs">{post.published}</p>
+							<a
+								href={`/blog/${post._meta.path}`}
+								className="group border-base-200/0 hover:border-base-200 hover:bg-base-50 focus-visible:ring-primary -mx-4 block rounded-xl border px-4 py-4 transition-colors outline-none focus-visible:ring-2"
+							>
+								<p className="text-base-400 mb-1 text-xs">
+									<time dateTime={post.updated ?? post.published}>
+										{post.updated != null ? 'Updated ' : 'Published '}
+										{formatDate(post.updated ?? post.published)}
+									</time>
+								</p>
 								<h2 className="group-hover:text-primary text-lg font-semibold transition-colors">
 									{post.title}
 								</h2>
 								<p className="text-base-500 mt-1 text-sm leading-relaxed">{post.summary}</p>
-								<span className="text-primary mt-2 inline-block text-xs">Read →</span>
 							</a>
 						</article>
 					))}
 				</div>
 			</main>
 
-			<footer className="border-base-100 border-t px-6 py-10 text-center">
-				<a
-					href="/"
-					className="bg-base-950 text-base-0 hover:bg-base-800 inline-block rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
-				>
-					← Open the Timer
-				</a>
+			<footer className="px-6 pb-16">
+				<PomodoroCatTimerCta />
 			</footer>
 		</>
 	);
 }
 
-const Header: React.FC = () => {
-	return (
-		<header className="border-base-100 flex items-center justify-between border-b px-6 py-4">
-			<span className="text-base-950 font-semibold">🐱 Pomodoro Cat</span>
-			<a href="/" className="text-base-400 hover:text-base-950 text-sm transition-colors">
-				Open Timer →
-			</a>
-		</header>
-	);
-};
+function formatDate(date: string): string {
+	return new Intl.DateTimeFormat('en', {
+		dateStyle: 'long',
+		timeZone: 'UTC'
+	}).format(new Date(date));
+}

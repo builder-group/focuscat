@@ -3,6 +3,16 @@ import { createFileRoute } from '@tanstack/react-router';
 import { appConfig } from '@/environment';
 
 export const Route = createFileRoute('/help/')({
+	head: () => ({
+		meta: [
+			{ title: 'FocusCat Help and Support' },
+			{
+				name: 'description',
+				content: 'Get help with FocusCat by email or from the community on Discord.'
+			}
+		],
+		links: [{ rel: 'canonical', href: 'https://focuscat.app/help' }]
+	}),
 	component: RouteComponent
 });
 

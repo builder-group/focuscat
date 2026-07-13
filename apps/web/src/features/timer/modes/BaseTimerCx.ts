@@ -82,7 +82,7 @@ export abstract class BaseTimerCx implements TTimerCx {
 		for (const unlisten of this._unlisteners) unlisten();
 		this._unlisteners.length = 0;
 		if (typeof document !== 'undefined') {
-			document.title = 'FocusCat';
+			document.title = getDocumentTitleBrand();
 		}
 	}
 
@@ -131,15 +131,16 @@ export abstract class BaseTimerCx implements TTimerCx {
 		const status = this.$status.get();
 		const remaining = this.$remainingSeconds.get();
 		const overtime = this.$overtimeSeconds.get();
+		const brand = getDocumentTitleBrand();
 
 		let newTitle: string;
 		if (status === 'idle') {
-			newTitle = 'FocusCat';
+			newTitle = brand;
 		} else if (remaining === 0 && overtime > 0) {
-			newTitle = `+${formatTime(overtime)} • FocusCat`;
+			newTitle = `+${formatTime(overtime)} • ${brand}`;
 		} else {
 			const prefix = status === 'paused' ? '⏸ ' : '';
-			newTitle = `${prefix}${formatTime(remaining)} • FocusCat`;
+			newTitle = `${prefix}${formatTime(remaining)} • ${brand}`;
 		}
 
 		if (typeof document !== 'undefined' && document.title !== newTitle) {
@@ -150,4 +151,11 @@ export abstract class BaseTimerCx implements TTimerCx {
 	protected _getElapsedSeconds(): number {
 		return this.$totalSeconds.get() - this.$remainingSeconds.get() + this.$overtimeSeconds.get();
 	}
+}
+
+function getDocumentTitleBrand(): 'FocusCat' | 'Pomodoro Cat' {
+	if (typeof window !== 'undefined' && window.location.hostname.includes('pomodorocat')) {
+		return 'Pomodoro Cat';
+	}
+	return 'FocusCat';
 }

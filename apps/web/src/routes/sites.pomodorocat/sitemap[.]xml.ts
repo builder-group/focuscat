@@ -8,7 +8,11 @@ const sitemapRoutes: TSitemapRoute[] = [
 		path: 'blog/:slug',
 		changefreq: 'monthly',
 		priority: '0.8',
-		expand: () => allPomodorocatBlogs.map((p) => ({ slug: p._meta.path }))
+		expand: () =>
+			allPomodorocatBlogs.map((p) => ({
+				slug: p._meta.path,
+				lastmod: p.updated ?? p.published
+			}))
 	}
 ];
 
@@ -20,13 +24,14 @@ export const Route = createFileRoute('/sites/pomodorocat/sitemap.xml')({
 				const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
-	.map(
-		(u) => `  <url>
-    <loc>${u.loc}</loc>
+	.map((u) => {
+		const lastmod = u.lastmod != null ? `\n    <lastmod>${u.lastmod}</lastmod>` : '';
+		return `  <url>
+    <loc>${u.loc}</loc>${lastmod}
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
-  </url>`
-	)
+  </url>`;
+	})
 	.join('\n')}
 </urlset>`;
 				return new Response(xml, {
@@ -48,6 +53,7 @@ function buildSitemapUrls(
 				const path = route.path.replace(/:(\w+)/g, (_, key) => params[key] ?? '');
 				urls.push({
 					loc: `${origin}/${path}`,
+					lastmod: params['lastmod'],
 					changefreq: route.changefreq,
 					priority: route.priority
 				});
@@ -72,6 +78,7 @@ interface TSitemapRoute {
 
 interface TSitemapUrl {
 	loc: string;
+	lastmod?: string;
 	changefreq: 'weekly' | 'monthly';
 	priority: string;
 }

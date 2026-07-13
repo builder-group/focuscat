@@ -4,10 +4,12 @@
 
 Split the web presence across two domains with distinct purposes:
 
-- **focuscat.app** — Brand home and macOS app landing page
-- **pomodorocat.com** — Web pomodoro timer, SEO-focused
+- **focuscat.app**: Brand home and macOS app landing page
+- **pomodorocat.com**: Web Pomodoro timer and search-focused entry point
 
-Both are served from the same `web` codebase. Domain routing is handled via TanStack Router's `rewrite` option — browser URLs stay clean while the router internally maps to the correct route tree.
+Both are served from the same `web` codebase. TanStack Router's `rewrite` option handles domain routing. Browser URLs stay clean while the router maps each request to the correct route tree.
+
+Both sites use their apex domain as the canonical host. Vercel serves `focuscat.app` and `pomodorocat.com` as production domains. Their `www` variants use permanent `308` redirects to the corresponding apex domain. Canonical tags, sitemaps, and internal links must use the apex URLs.
 
 ## Rationale
 
@@ -17,11 +19,11 @@ Both are served from the same `web` codebase. Domain routing is handled via TanS
 
 `pomodorocat.com` contains the exact keyword ("pomodoro") plus the product differentiator ("cat"). It targets users actively searching for a pomodoro tool, which is the correct search intent for a web timer.
 
-Keeping both in one repo avoids duplication — shared components, shared `App.tsx`, shared infrastructure.
+Keeping both in one repo avoids duplication across shared components, `App.tsx`, and infrastructure.
 
 ### Why not more domains
 
-Multiple domains split link authority. Two focused domains is the limit — any more dilutes SEO effort without meaningful return.
+Multiple domains split link authority. Two focused domains is the limit. More domains would dilute search signals without adding a distinct product purpose.
 
 ### The funnel
 
@@ -39,11 +41,12 @@ The web timer is top-of-funnel for the macOS app, not a separate product.
 Ranking for "pomodoro timer" (high competition) is unlikely short-term. The realistic targets are:
 
 - "pomodoro cat"
-- "pomodoro kitty"
 - "cat pomodoro timer"
-- Long-tail: "pomodoro timer for cat lovers", "cute pomodoro timer"
+- "pomodoro timer cat"
+- "free online cat pomodoro timer"
+- "cute pomodoro timer"
 
-These are lower competition, correct intent, and aligned with the cat brand. Authority builds over time through Product Hunt, HN, Reddit, and content.
+These queries describe the product and match the intent of someone looking for a timer. Competitor brand names are not target keywords. Authority builds over time through useful product experiences, relevant links, and focused content.
 
 ## Architecture
 
@@ -63,7 +66,7 @@ Pomodorocat-specific components live in `src/app/sites/pomodorocat/`.
 
 ## Alternatives Considered
 
-- **Single domain (focuscat.app only)** — Simpler, but the domain doesn't target any pomodoro keyword. Missed SEO opportunity.
-- **Separate repos per domain** — Shared components would require package extraction. More maintenance overhead with no benefit.
-- **Nitro middleware URL rewriting** — Does not work with TanStack Start SSR. The rewritten path gets baked into the dehydrated router state; on hydration the client router sees a mismatch between the browser URL and the state, and navigates to the internal path, leaking `/sites/pomodorocat` into the URL bar.
-- **Hostname detection in root loader** — Works, but requires conditional rendering in every route component that needs to differ per domain. Becomes unmaintainable as pomodorocat grows its own pages.
+- **Single domain (focuscat.app only)**: Simpler, but the domain does not describe a Pomodoro timer. This misses a relevant search entry point.
+- **Separate repos per domain**: Shared components would require package extraction. This adds maintenance without a product benefit.
+- **Nitro middleware URL rewriting**: Does not work with TanStack Start SSR. The rewritten path gets baked into the dehydrated router state. During hydration, the client router sees a mismatch between the browser URL and the state. It then navigates to the internal path and exposes `/sites/pomodorocat` in the URL bar.
+- **Hostname detection in root loader**: Works, but requires conditional rendering in every route component that differs by domain. This becomes difficult to maintain as Pomodoro Cat gains its own pages.

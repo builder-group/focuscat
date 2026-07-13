@@ -5,9 +5,7 @@
 	"mainBinaryName": "FocusCat",
 	"identifier": "com.buildergroup.focuscat",
 	"build": {
-		"features": [
-			"app-store"
-		]
+		"features": ["app-store"]
 	},
 	"app": {
 		"macOSPrivateApi": false

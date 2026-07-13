@@ -5,12 +5,13 @@ import Content from './content.mdx';
 export const Route = createFileRoute('/help/app-store/')({
 	head: () => ({
 		meta: [
-			{ title: 'Direct download vs Mac App Store — FocusCat' },
+			{ title: 'Direct download vs Mac App Store: FocusCat' },
 			{
 				name: 'description',
 				content: 'Features available in the direct-download and Mac App Store versions of FocusCat.'
 			}
-		]
+		],
+		links: [{ rel: 'canonical', href: 'https://focuscat.app/help/app-store' }]
 	}),
 	component: RouteComponent
 });
