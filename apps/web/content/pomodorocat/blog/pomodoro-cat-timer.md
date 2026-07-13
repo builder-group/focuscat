@@ -40,8 +40,12 @@ This approach keeps the timer light. You can enjoy the cat without turning produ
 
 Start with the default 25-minute work session and 5-minute break. Change the intervals if the task calls for a different pace. Writing or programming may suit a longer block. Reviewing notes may work better in shorter rounds.
 
+If you want a repeatable way to choose, compare [25/5, 50/10, and shorter Pomodoro intervals](/blog/how-long-should-a-pomodoro-be).
+
 Before each session, write a concrete intention. "Draft the introduction" gives you a clearer target than "work on essay." During the break, stand up or look away from the screen. When you return, decide whether to continue the same task or choose the next one.
 
 The best timer is not the one with the most features. It is the one you can start without negotiating with yourself.
 
 New to timed focus sessions? Read [How to Use the Pomodoro Technique: A Practical Guide](/blog/what-is-pomodoro-technique).
+
+Using the timer for coursework? Follow the practical guide to [using a Pomodoro timer for studying](/blog/pomodoro-timer-for-studying).

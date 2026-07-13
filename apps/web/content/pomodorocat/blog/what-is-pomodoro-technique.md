@@ -50,17 +50,15 @@ Stop when the timer ends. A short break creates a clear boundary between session
 
 Move away from the task if you can. Stand up, stretch, drink water, or look outside. Opening another demanding tab often turns the break into a different kind of work.
 
+If a short break tends to disappear into your phone, choose a repeatable activity before the session starts. See [what to do during a five-minute Pomodoro break](/blog/what-to-do-during-pomodoro-break) for practical options.
+
 After four work sessions, take a longer break. The exact length depends on your day, but 15 to 30 minutes is common.
 
 ## Choose intervals that fit the work
 
-The default 25/5 rhythm suits many tasks because 25 minutes feels approachable. You can change it when the work needs a different pace:
+The default 25/5 rhythm is an approachable place to begin. A shorter session can lower the barrier to starting, while a longer session can reduce interruptions during setup-heavy work.
 
-- Try 15/5 when starting feels difficult
-- Try 25/5 for studying, administration, or mixed tasks
-- Try 50/10 for writing, design, or programming that needs more setup time
-
-Keep the interval long enough to make progress and short enough that you will start. Avoid changing it after every session. Use one rhythm for a few days, then judge it from experience.
+Keep one rhythm for a few days before changing it. The guide to [choosing a Pomodoro length](/blog/how-long-should-a-pomodoro-be) compares 25/5, 50/10, and shorter sessions in more detail.
 
 ## Use the timer as feedback
 
@@ -74,5 +72,7 @@ The answers matter more than the number of completed Pomodoros. A session can re
 ## Start with one session
 
 You do not need to plan a full day around the method. Choose one task and complete one focused interval. If the structure helps, run another after the break.
+
+Using the method for coursework or exam preparation? Read [How to Use a Pomodoro Timer for Studying](/blog/pomodoro-timer-for-studying).
 
 If the visual side of a focus tool matters to you, read [Why a Cat Pomodoro Timer Can Make Focus Easier](/blog/pomodoro-cat-timer).

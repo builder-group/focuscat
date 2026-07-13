@@ -153,6 +153,30 @@ function RouteComponent() {
 								Why a Cat Pomodoro Timer Can Make Focus Easier
 							</a>
 						</li>
+						<li>
+							<a
+								href="/blog/pomodoro-timer-for-studying"
+								className="text-base-600 hover:text-base-950 underline underline-offset-2"
+							>
+								How to Use a Pomodoro Timer for Studying
+							</a>
+						</li>
+						<li>
+							<a
+								href="/blog/how-long-should-a-pomodoro-be"
+								className="text-base-600 hover:text-base-950 underline underline-offset-2"
+							>
+								How Long Should a Pomodoro Be? 25/5 vs 50/10
+							</a>
+						</li>
+						<li>
+							<a
+								href="/blog/what-to-do-during-pomodoro-break"
+								className="text-base-600 hover:text-base-950 underline underline-offset-2"
+							>
+								What to Do During a 5-Minute Pomodoro Break
+							</a>
+						</li>
 					</ul>
 				</div>
 			</section>
