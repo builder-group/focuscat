@@ -2,7 +2,6 @@ use super::{
     persistence,
     types::{AppSettings, AppSettingsChangedEvent, AppSettingsState},
 };
-#[cfg(not(feature = "app-store"))]
 use crate::features::autostart;
 use crate::{
     common::path::get_app_data_dir,
@@ -42,7 +41,6 @@ pub fn set_settings(
 
     // Apply new autostart setting
     if prev_launch_at_login != settings.launch_at_login {
-        #[cfg(not(feature = "app-store"))]
         autostart::apply(&app, settings.launch_at_login);
     }
 

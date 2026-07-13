@@ -97,27 +97,11 @@ function RouteComponent() {
 							</ToggleGroup.Item>
 						</ToggleGroup>
 					</SettingItem>
-					<SettingItem
-						label="Launch at login"
-						description={
-							isAppStore ? (
-								<SettingItemWarnDescription
-									text="Not available in App Store builds"
-									url={appConfig.distribution.docsAppStore}
-								/>
-							) : (
-								'Start FocusCat when you log in'
-							)
-						}
-						disabled={isAppStore}
-					>
+					<SettingItem label="Launch at login" description="Start FocusCat when you log in">
 						<Switch
-							checked={isAppStore ? false : settings.launchAtLogin}
-							onCheckedChange={(checked) =>
-								!isAppStore && settingsCx.update({ launchAtLogin: checked })
-							}
+							checked={settings.launchAtLogin}
+							onCheckedChange={(checked) => settingsCx.update({ launchAtLogin: checked })}
 							size="sm"
-							disabled={isAppStore}
 						/>
 					</SettingItem>
 				</SettingGroup>

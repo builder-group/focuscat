@@ -1,25 +1,26 @@
-# Web vs App Store distribution
+# Direct download vs Mac App Store distribution
 
-What's different between the two distribution channels, and why.
+FocusCat ships through two macOS distribution channels: direct download and the Mac App Store. The builds differ where App Store sandboxing and review rules limit functionality.
 
 ## Why two versions?
 
-The Mac App Store has three restrictions that limit FocusCat's functionality:
+The Mac App Store has restrictions that limit FocusCat's functionality:
 
 1. **[App Sandbox](https://developer.apple.com/documentation/security/app-sandbox) (required)**. Sandboxed apps cannot access other processes. This blocks cross-process Accessibility API calls, which FocusCat uses for window title tracking.
 2. **No private APIs ([guideline 2.5.1](https://developer.apple.com/app-store/review/guidelines/#software-requirements))**. Apple rejects apps that use non-public APIs. Tauri's `macOSPrivateApi` option (needed for transparent/overlay windows) enables a [transparent background API](https://v2.tauri.app/reference/config/) that counts as private API usage, so the cat widget can't be included.
 3. **Input Monitoring for non-accessibility ([guideline 2.4.5](https://developer.apple.com/app-store/review/guidelines/#performance))**. Apps may not use Input Monitoring to read keystrokes for non-accessibility purposes. FocusCat uses it for idle detection (e.g. AFK) and cat reaction to keypress, so the App Store build does not use it.
 
-The web version has neither restriction, so it can offer full functionality.
+The direct-download version is not subject to the App Store sandbox and review requirements, so it can offer the full feature set.
 
 ## Feature comparison
 
-| Feature                                            | Web                 | App Store       |
+| Feature                                            | Direct download     | App Store       |
 | -------------------------------------------------- | ------------------- | --------------- |
 | Pomodoro timer                                     | Yes                 | Yes             |
 | App activity tracking (which app is active)        | Yes                 | Yes             |
 | Window title tracking (what's open in each app)    | Yes                 | No              |
 | Idle detection & cat reaction to keypress (global) | Yes                 | No              |
+| Launch at login                                    | Yes                 | Yes             |
 | Cat widget (transparent overlay)                   | Yes                 | No              |
 | Auto-updates                                       | Yes (Tauri updater) | Yes (App Store) |
 
@@ -49,7 +50,7 @@ The cat widget is a transparent overlay that sits on top of other windows. Tauri
 
 ## Build differences
 
-|                   | Web                      | App Store                  |
+|                   | Direct download          | App Store                  |
 | ----------------- | ------------------------ | -------------------------- |
 | Tauri config      | `tauri.prod.conf.json`   | `tauri.appstore.conf.json` |
 | Cargo feature     | (default)                | `app-store`                |
@@ -65,7 +66,7 @@ The `app-store` Cargo feature gates sandbox-incompatible code:
 
 ```rust
 #[cfg(not(feature = "app-store"))]
-// code that only runs in the web version
+// code that only runs in the direct-download version
 ```
 
 The Tauri config handles the rest: `tauri.appstore.conf.json` overrides `macOSPrivateApi` to `false` and applies sandbox entitlements.
@@ -74,10 +75,10 @@ The Tauri config handles the rest: `tauri.appstore.conf.json` overrides `macOSPr
 
 Both versions use the same bundle ID, but macOS stores data in different locations:
 
-|           | Path                                                                                                         |
-| --------- | ------------------------------------------------------------------------------------------------------------ |
-| Web       | `~/Library/Application Support/com.buildergroup.focuscat/`                                                   |
-| App Store | `~/Library/Containers/com.buildergroup.focuscat/Data/Library/Application Support/com.buildergroup.focuscat/` |
+|                 | Path                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------ |
+| Direct download | `~/Library/Application Support/com.buildergroup.focuscat/`                                                   |
+| App Store       | `~/Library/Containers/com.buildergroup.focuscat/Data/Library/Application Support/com.buildergroup.focuscat/` |
 
 This is automatic. Sandboxed apps get a [container directory](https://developer.apple.com/documentation/security/migrating-your-app-s-files-to-its-app-sandbox-container) at `~/Library/Containers/<bundle-id>/` where macOS redirects standard path-finding APIs. The code uses the same paths. macOS handles the redirection. If a user switches between versions, their data does not carry over automatically.
 

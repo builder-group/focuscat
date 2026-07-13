@@ -1,0 +1,36 @@
+# Direct download vs Mac App Store
+
+FocusCat is available as a direct download from [focuscat.app](https://focuscat.app) and from the Mac App Store. Some features are unavailable in the App Store version because of its sandbox and App Review requirements.
+
+If **Track Windows** or another setting is disabled and marked "Not available in App Store builds," this is expected.
+
+## Feature comparison
+
+### Available in both versions
+
+- Pomodoro timer
+- App activity tracking (which app is active)
+- Launch at login
+- Automatic updates
+
+### Direct download only
+
+- Window and browser tracking
+- Idle detection and cat reactions to global input
+- Floating cat widget
+
+## Why is Track Windows unavailable?
+
+The Mac App Store requires apps to use Apple's App Sandbox. The sandbox prevents FocusCat from reading window information from other apps, so the App Store version can track which app is active but not its individual windows, browser tabs, or URLs.
+
+## Why are idle detection and the cat widget unavailable?
+
+Idle detection and cat reactions to global input require Input Monitoring access, which the App Store version does not use. The floating cat widget requires private macOS functionality that App Store apps may not use.
+
+## Which version should I use?
+
+Use the **Mac App Store version** if you prefer installing and updating through Apple and do not need the unavailable features.
+
+Use the **direct-download version** from [focuscat.app](https://focuscat.app) if you want window and browser tracking, idle detection, or the floating cat widget.
+
+Both versions use the same app identity, so installing one replaces the other. Their local data is stored separately and does not transfer automatically when switching versions.

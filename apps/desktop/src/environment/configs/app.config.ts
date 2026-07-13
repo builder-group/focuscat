@@ -13,7 +13,6 @@ export const appConfig = {
 	distribution: {
 		website: 'https://focuscat.app',
 		github: 'https://github.com/builder-group/focuscat',
-		docsAppStore:
-			'https://github.com/builder-group/focuscat/blob/develop/docs/distribution/focuscat-web-vs-appstore.md'
+		docsAppStore: 'https://focuscat.app/help/app-store'
 	}
 } as const;
