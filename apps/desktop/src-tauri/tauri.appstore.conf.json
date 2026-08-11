@@ -1,11 +1,13 @@
 {
 	"$schema": "https://schema.tauri.app/config/2",
 	"productName": "FocusCat",
-	"version": "0.0.49",
+	"version": "0.0.50",
 	"mainBinaryName": "FocusCat",
 	"identifier": "com.buildergroup.focuscat",
 	"build": {
-		"features": ["app-store"]
+		"features": [
+			"app-store"
+		]
 	},
 	"app": {
 		"macOSPrivateApi": false
