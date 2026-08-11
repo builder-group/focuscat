@@ -1,4 +1,4 @@
-import { useCombinedCompute } from 'feature-react/state';
+import { useCompute } from 'feature-react/state';
 import React from 'react';
 import { ActivityTrackCx } from './ActivityTrackCx';
 import { AppBlock, CategoryBlock, WindowGroupBlock } from './components';
@@ -7,12 +7,12 @@ import type { TActivityBlock } from './types';
 export const ActivityTrack: React.FC<TActivityTrackProps> = (props) => {
 	const { cx } = props;
 
-	const blocks = useCombinedCompute(
+	const blocks = useCompute(
 		[cx.$blocks, cx.timelineCx.$visibleRange] as const,
-		([{ value: allBlocks = [] }, { value: range = { startMs: 0, endMs: Infinity } }]) =>
+		([allBlocks = [], range = { startMs: 0, endMs: Infinity }]) =>
 			allBlocks.filter((b) => b.endMs > range.startMs && b.startMs < range.endMs),
 		[cx, cx.timelineCx],
-		{ isEqual: blocksEqual }
+		blocksEqual
 	);
 
 	return (

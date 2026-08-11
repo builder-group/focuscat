@@ -59,8 +59,8 @@ export const SessionEventPeriodOverlays: React.FC<TSessionEventPeriodOverlaysPro
 	// MARK: - Effects
 
 	// Reposition on zoom/resize (ref callback handles initial positioning)
-	useListener(cx.timelineCx.$zoom, updatePositions, [updatePositions]);
-	useListener(cx.timelineCx.$containerRect, updatePositions, [updatePositions]);
+	useListener(cx.timelineCx.$zoom, updatePositions);
+	useListener(cx.timelineCx.$containerRect, updatePositions);
 
 	// MARK: - UI
 
@@ -130,8 +130,8 @@ export const SessionEventMarkers: React.FC<TSessionMarkersProps> = (props) => {
 	// MARK: - Effects
 
 	// Reposition on zoom/resize (ref callback handles initial positioning)
-	useListener(cx.timelineCx.$zoom, updatePositions, [updatePositions]);
-	useListener(cx.timelineCx.$containerRect, updatePositions, [updatePositions]);
+	useListener(cx.timelineCx.$zoom, updatePositions);
+	useListener(cx.timelineCx.$containerRect, updatePositions);
 
 	// MARK: - UI
 

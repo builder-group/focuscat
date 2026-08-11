@@ -13,7 +13,7 @@ import {
 	useMediaQuery,
 	type TCatRef
 } from '@repo/ui';
-import { useCombinedCompute, useFeatureState } from 'feature-react/state';
+import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { useAudioCx } from '@/features/audio';
 import { useSettingsCx } from '@/features/settings';
@@ -28,7 +28,7 @@ export const CatWindow: React.FC<TCatWindowProps> = (props) => {
 	const catRef = React.useRef<TCatRef>(null);
 	const isMobile = useMediaQuery(mq.max(mq.sm));
 
-	const { isBreak, isOvertime, isRunning, displayTime } = useCombinedCompute(
+	const { isBreak, isOvertime, isRunning, displayTime } = useCompute(
 		[
 			timerCx.$status,
 			timerCx.$sessionType,
@@ -36,10 +36,10 @@ export const CatWindow: React.FC<TCatWindowProps> = (props) => {
 			timerCx.$overtimeSeconds
 		] as const,
 		([
-			{ value: status = 'idle' },
-			{ value: sessionType = 'pomodoro:work' },
-			{ value: remainingSeconds = 0 },
-			{ value: overtimeSeconds = 0 }
+			status = 'idle',
+			sessionType = 'pomodoro:work',
+			remainingSeconds = 0,
+			overtimeSeconds = 0
 		]) => {
 			const isOvertime = overtimeSeconds > 0;
 			return {
@@ -50,13 +50,11 @@ export const CatWindow: React.FC<TCatWindowProps> = (props) => {
 			};
 		},
 		[],
-		{
-			isEqual: (a, b) =>
-				a.isBreak === b.isBreak &&
-				a.isOvertime === b.isOvertime &&
-				a.isRunning === b.isRunning &&
-				a.displayTime === b.displayTime
-		}
+		(a, b) =>
+			a.isBreak === b.isBreak &&
+			a.isOvertime === b.isOvertime &&
+			a.isRunning === b.isRunning &&
+			a.displayTime === b.displayTime
 	);
 
 	// MARK: - Actions

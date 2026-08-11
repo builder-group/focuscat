@@ -1,4 +1,4 @@
-import { withLocalStorage } from 'feature-react/state';
+import { localStorageFeature } from 'feature-react/state';
 import { createState } from 'feature-state';
 import { TimelineCx } from '@/components';
 import type { specta } from '@/environment';
@@ -30,11 +30,10 @@ export class SessionTimelineCx {
 		} = options;
 
 		this.config = { storageKey, granularityMin, granularityMax, granularityDefault };
-		this.$granularity = withLocalStorage(createState(granularityDefault), storageKey);
+		this.$granularity = createState(granularityDefault).with(localStorageFeature(storageKey));
 		this.$granularity.persist();
-		this.$viewMode = withLocalStorage(
-			createState<TViewMode>('apps'),
-			'focuscat:timeline-view-mode'
+		this.$viewMode = createState<TViewMode>('apps').with(
+			localStorageFeature('focuscat:timeline-view-mode')
 		);
 		this.$viewMode.persist();
 

@@ -19,30 +19,35 @@ name = "focuscat_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2.5.6", features = [] }
+tauri-build = { version = "2.6.3", features = [] }
 
 [dependencies]
-tauri = { version = "2.10.3", features = ["macos-private-api", "tray-icon"] }
-tauri-plugin-opener = "2.5.3"
+tauri = { version = "2.11.5", features = ["macos-private-api", "tray-icon"] }
+tauri-plugin-opener = "2.5.4"
 tauri-plugin-os = "2.3.2"
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.149"
-specta = { version = "2.0.0-rc.21", features = ["derive"] }
-tauri-specta = { version = "2.0.0-rc.21", features = ["derive", "typescript"] }
-specta-typescript = "0.0.9"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+specta = { version = "2.0.0-rc.25", features = ["derive"] }
+tauri-specta = { version = "2.0.0-rc.25", features = ["derive", "typescript"] }
+specta-typescript = "0.0.12"
 png = "0.18.1"
-chrono = "0.4.44"
-tokio = { version = "1.51.0", features = ["sync", "macros", "time"] }
-sqlx = { version = "0.8.6", features = ["runtime-tokio", "sqlite", "migrate"] }
+chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
+tokio = { version = "1.53.1", features = ["sync", "macros", "time"] }
+sqlx = { version = "0.9.0", default-features = false, features = [
+    "runtime-tokio",
+    "sqlite",
+    "migrate",
+    "macros",
+] }
 # Git version required for `set_is_main_thread()` fix - crashes on macOS keyboard events without it.
 # See: https://github.com/Narsil/rdev/issues/165
 # TODO: Switch to crates.io version once 0.5.4+ is released with this fix.
 rdev = { git = "https://github.com/Narsil/rdev.git", rev = "c14f2dc" }
-mado = "0.0.2"
+mado = "0.0.16"
 focuscat-macos = { path = "../crates/macos" }
 nucleo-matcher = "0.3.1"
-rodio = "0.21.1"
+rodio = "0.22.2"
 
 [target.'cfg(any(target_os = "macos", windows, target_os = "linux"))'.dependencies]
-tauri-plugin-updater = "2.10.0"
+tauri-plugin-updater = "2.10.1"
 tauri-plugin-autostart = "2.5.1"

@@ -14,9 +14,9 @@ Input.displayName = 'Input';
 
 const inputVariants = cva(
 	[
-		'w-full rounded-md border bg-base-50 text-base-900',
+		'bg-base-50 text-base-900 w-full rounded-md border',
 		'placeholder:text-base-400',
-		'outline-none focus:ring-2 focus:ring-primary focus:-ring-offset-1',
+		'focus:ring-primary focus:-ring-offset-1 outline-none focus:ring-2',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 		'transition-colors duration-100'
 	],

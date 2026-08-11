@@ -7,7 +7,7 @@ import { CountdownTimerCx, PomodoroTimerCx, ProgressivePomodoroTimerCx } from '.
 export const TimerCxProvider: React.FC<TTimerCxProviderProps> = (props) => {
 	const { children, enableSideEffects = false, windowKind = 'main' } = props;
 	const settingsCx = useSettingsCx();
-	const timerMode = useCompute(settingsCx.$appSettings, ({ value }) => value.timer.timerMode);
+	const timerMode = useCompute(settingsCx.$appSettings, (value) => value.timer.timerMode);
 
 	const cx = useMemoCleanup(() => {
 		let timerCx;

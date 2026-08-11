@@ -36,13 +36,9 @@ export const ThemeProvider: React.FC<TThemeProviderProps> = (props) => {
 	// MARK: - Effects
 
 	// Subscribe to theme setting (fires immediately + on changes)
-	useSubscriber(
-		settingsCx.$appSettings,
-		({ value }) => {
-			applyTheme(value.appearance.theme);
-		},
-		[applyTheme]
-	);
+	useSubscriber(settingsCx.$appSettings, ({ value }) => {
+		applyTheme(value.appearance.theme);
+	});
 
 	// Listen for system theme changes (only matters when set to 'auto')
 	React.useEffect(() => {

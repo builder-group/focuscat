@@ -1,5 +1,5 @@
 import { Badge, ToggleGroup, type TBadgeProps } from '@repo/ui';
-import { type TForm } from 'feature-form';
+import { type TDirtyFeature, type TForm } from 'feature-form';
 import { useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { AppWebsiteSelect, type TSelectedItem } from '@/components';
@@ -135,7 +135,7 @@ export const CategorySettingGroup: React.FC<TCategorySettingGroupProps> = (props
 };
 
 interface TCategorySettingGroupProps {
-	form: TForm<TFocusProfileFormData, []>;
+	form: TForm<TFocusProfileFormData, [TDirtyFeature<TFocusProfileFormData>]>;
 	categories?: {
 		value: specta.FocusCategory;
 		label: string;

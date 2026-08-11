@@ -4,7 +4,7 @@ use std::{ops::Deref, sync::Mutex};
 use tauri::App;
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct AppSettings {
     pub version: SettingsVersion,
     pub launch_at_login: bool,
@@ -44,11 +44,13 @@ pub enum SettingsVersion {
     V0_0_1,
     #[serde(rename = "0.0.2")]
     V0_0_2,
+    #[serde(rename = "0.0.3")]
+    V0_0_3,
 }
 
 impl SettingsVersion {
     pub fn current() -> Self {
-        return Self::V0_0_2;
+        return Self::V0_0_3;
     }
 }
 
@@ -59,7 +61,7 @@ impl Default for SettingsVersion {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct FeaturesSettings {
     pub goals: bool,
     pub activity: bool,
@@ -81,7 +83,7 @@ impl Default for FeaturesSettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type, Default)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct AppearanceSettings {
     pub theme: Theme,
 }
@@ -96,7 +98,7 @@ pub enum Theme {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct AudioSettings {
     pub session: AudioChannelSettings,
     pub session_end: AudioChannelSettings,
@@ -114,10 +116,11 @@ impl Default for AudioSettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct AudioChannelSettings {
     pub enabled: bool,
     /// Volume 0.0..=1.0 (linear scale)
+    #[specta(type = specta_typescript::Number)]
     pub volume: f32,
 }
 
@@ -131,7 +134,7 @@ impl Default for AudioChannelSettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct DeveloperSettings {
     pub cat: bool,
     pub timer_speed: u32,
@@ -147,7 +150,7 @@ impl Default for DeveloperSettings {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct TimerSettings {
     pub timer_mode: TimerModeEnum,
     pub pomodoro: PomodoroSettings,
@@ -176,7 +179,7 @@ pub enum TimerModeEnum {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct PomodoroSettings {
     pub work_duration_minutes: u32,
     pub short_break_minutes: u32,
@@ -202,7 +205,7 @@ impl Default for PomodoroSettings {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct ProgressivePomodoroSettings {
     pub ratings: Vec<ProgressiveRatingSetting>,
     pub auto_advance: bool,
@@ -282,7 +285,7 @@ pub struct ProgressiveRatingSetting {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct CountdownSettings {
     pub duration_minutes: u32,
     pub show_session_setup: bool,
@@ -298,7 +301,7 @@ impl Default for CountdownSettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct GoalSettings {
     /// Daily focus goal in minutes (default: 120 = 2h)
     pub daily_goal_minutes: u32,
@@ -313,7 +316,7 @@ impl Default for GoalSettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct ActivitySettings {
     /// Whether to record app usage (app switches)
     pub track_apps: bool,
@@ -334,7 +337,7 @@ impl Default for ActivitySettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct CatSettings {
     pub equipped_fur: String,
     pub equipped_face: String,
@@ -352,7 +355,7 @@ impl Default for CatSettings {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, specta::Type)]
-#[serde(rename_all = "camelCase", default)]
+#[serde(rename_all = "camelCase")]
 pub struct FocusSettings {
     pub block_threshold: BlockThreshold,
 }

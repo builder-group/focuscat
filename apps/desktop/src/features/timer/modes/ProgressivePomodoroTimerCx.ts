@@ -10,7 +10,7 @@ export class ProgressivePomodoroTimerCx extends BaseTimerCx implements TProgress
 	// Tracks the duration for the next work session (used when break ends → advance to work).
 	private readonly $currentWorkDuration = createState<number>(0);
 
-	protected applyTimerUpdate(timer: specta.TimerDto): void {
+	protected override applyTimerUpdate(timer: specta.TimerDto): void {
 		const prevOvertime = this.$overtimeSeconds.get();
 		super.applyTimerUpdate(timer);
 		this._checkAutoAdvance(prevOvertime, timer.overtimeSeconds);

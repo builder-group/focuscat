@@ -1,10 +1,5 @@
 name: '🔍 CI'
-description: 'Run full CI pipeline: lint, typecheck, test'
-
-inputs:
-  app:
-    description: 'App name to run CI for'
-    required: true
+description: 'Lint, build, and test the workspace'
 
 runs:
   using: composite
@@ -12,18 +7,22 @@ runs:
     - name: Setup pnpm
       uses: ./.github/actions/setup-pnpm
 
-    - name: Build workspace dependencies
-      shell: bash
-      run: pnpm exec turbo run build --filter='@repo/${{ inputs.app }}^...'
-
     - name: Lint
       shell: bash
-      run: pnpm --filter @repo/${{ inputs.app }} lint
+      run: pnpm lint
 
-    - name: Typecheck
+    - name: Build workspace dependencies
       shell: bash
-      run: pnpm --filter @repo/${{ inputs.app }} typecheck
+      run: pnpm exec turbo run build --filter='@repo/desktop^...' --filter='@repo/web^...'
+
+    - name: Build desktop UI
+      shell: bash
+      run: pnpm --filter @repo/desktop ui:build
+
+    - name: Build web
+      shell: bash
+      run: pnpm --filter @repo/web build
 
     - name: Test
       shell: bash
-      run: pnpm --filter @repo/${{ inputs.app }} test
+      run: pnpm test

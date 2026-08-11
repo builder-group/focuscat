@@ -1,22 +1,17 @@
 # 😬 Technical Debt
 
-## ESLint v9 Lock-in
+## TypeScript 7 Hold
 
-We pin ESLint to v9 and exclude it from `update:latest` because **eslint-plugin-react** does not yet support ESLint 10. Upgrading to ESLint 10 causes:
-
-```
-TypeError: Error while loading rule 'react/display-name': contextOrFilename.getFilename is not a function
-```
-
-ESLint 10 changed the rule context API; the React plugin still relies on the old `getFilename` API.
+FocusCat currently targets TypeScript 6. TypeScript is excluded from `update:latest` so a
+routine dependency refresh cannot move the repository to TypeScript 7 before that migration is
+planned and tested.
 
 ### Current state
 
-- **Pinned:** `eslint@^9.39.2`, `@eslint/js@^9.39.2`
-- **Excluded from update:latest** (this repo and `@blgc/config`):
-  - `eslint`
-  - `@eslint/js`
+- **Pinned major:** `typescript@^6.0.3`
+- **Excluded from `update:latest`:** `typescript`
 
 ### When to revisit
 
-- When [eslint-plugin-react supports ESLint 10](https://github.com/jsx-eslint/eslint-plugin-react/issues/3977), remove the version pin and the `update:latest` exclusions, then upgrade to ESLint 10.
+- When FocusCat is ready for TypeScript 7, remove the exclusion, follow the TypeScript migration
+  guidance, and validate all app and library builds before adopting it.

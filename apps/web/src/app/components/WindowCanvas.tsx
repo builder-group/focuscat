@@ -13,7 +13,7 @@ import { DraggableWindow } from './DraggableWindow';
 
 export const WindowCanvas: React.FC<TWindowCanvasProps> = (props) => {
 	const { windowCx } = props;
-	const showWidgets = useCompute(windowCx.$breakpoint, ({ value }) => value !== 'sm');
+	const showWidgets = useCompute(windowCx.$breakpoint, (value) => value !== 'sm');
 
 	return (
 		<>

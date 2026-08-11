@@ -10,7 +10,7 @@ import { TimeDisplay } from './TimeDisplay';
 
 export const TimerView: React.FC<TTimerViewProps> = (props) => {
 	const { cx, className, style } = props;
-	const speed = useCompute(cx.$config, ({ value }) => value.dev.speed);
+	const speed = useCompute(cx.$config, (value) => value.dev.speed);
 
 	const renderDial = React.useCallback((): React.ReactNode => {
 		switch (cx.timer.mode) {

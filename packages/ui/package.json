@@ -30,30 +30,31 @@
 	],
 	"scripts": {
 		"build": "shx rm -rf dist && rollup -c rollup.config.js && pnpm build:css",
-		"build:css": "shx cp ./src/styles/theme.css ./dist/theme.css && npx @tailwindcss/cli -i ./src/styles/tailwind.css -o ./dist/tailwind.css",
+		"build:css": "shx cp ./src/styles/theme.css ./dist/theme.css && pnpm exec tailwindcss -i ./src/styles/tailwind.css -o ./dist/tailwind.css",
 		"build:prod": "export NODE_ENV=production && pnpm build",
 		"clean": "shx rm -rf dist && shx rm -rf .turbo && shx rm -rf node_modules",
 		"install:clean": "pnpm run clean && pnpm install",
-		"lint": "eslint . --fix",
-		"start:dev": "tsc -w && pnpm watch:css",
+		"lint": "eslint .",
+		"start:dev": "pnpm run \"/^watch:.*/\"",
 		"test": "vitest run",
 		"update:latest": "pnpm update --latest",
-		"watch:css": "shx cp ./src/styles/theme.css ./dist/theme.css && npx @tailwindcss/cli -i ./src/styles/tailwind.css -o ./dist/tailwind.css --watch"
+		"watch:css": "shx cp ./src/styles/theme.css ./dist/theme.css && pnpm exec tailwindcss -i ./src/styles/tailwind.css -o ./dist/tailwind.css --watch",
+		"watch:types": "tsc -w"
 	},
 	"dependencies": {
-		"@base-ui/react": "^1.3.0",
+		"@base-ui/react": "^1.7.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"feature-react": "^0.0.67",
-		"feature-state": "^0.0.65",
-		"lucide-react": "^1.7.0",
-		"motion": "^12.38.0",
-		"tailwind-merge": "^3.5.0"
+		"feature-react": "^0.1.0",
+		"feature-state": "^0.1.0",
+		"lucide-react": "^1.31.0",
+		"motion": "^13.0.0",
+		"tailwind-merge": "^3.6.0"
 	},
 	"devDependencies": {
-		"@tailwindcss/cli": "^4.2.2",
-		"@types/react": "^19.2.14",
-		"react": "^19.2.4",
-		"tailwindcss": "^4.2.2"
+		"@tailwindcss/cli": "^4.3.3",
+		"@types/react": "^19.2.18",
+		"react": "^19.2.8",
+		"tailwindcss": "^4.3.3"
 	}
 }

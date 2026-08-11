@@ -105,7 +105,7 @@ impl AppSearch {
         if app.icon.is_some() {
             return;
         }
-        let data = get_app_icon(&app.bundle_id, 64);
+        let data = get_app_icon(&app.bundle_id, 64, true);
         app.icon = data.data_url;
         app.color = data.color;
     }
@@ -141,6 +141,7 @@ impl AppSearch {
     fn load_apps() -> Vec<SearchableItem> {
         let config = InstalledAppsConfig {
             include_icon: false,
+            include_app_color: false,
             icon_size: 0,
         };
 

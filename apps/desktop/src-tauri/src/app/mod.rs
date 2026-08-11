@@ -24,6 +24,7 @@ use crate::features::{
     updater,
     updater::types::UpdateAvailableEvent,
 };
+#[cfg(debug_assertions)]
 use specta_typescript::Typescript;
 use tauri::Manager;
 use tauri_plugin_autostart::MacosLauncher;

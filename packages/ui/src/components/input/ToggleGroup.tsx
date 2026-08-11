@@ -27,7 +27,7 @@ const ToggleGroupRoot: React.FC<TToggleGroupProps> = (props) => {
 	);
 };
 
-const toggleGroupRootVariants = cva(['bg-base-100 flex gap-0.5 rounded-md ring-1 ring-base-200'], {
+const toggleGroupRootVariants = cva(['bg-base-100 ring-base-200 flex gap-0.5 rounded-md ring-1'], {
 	variants: {
 		size: {
 			sm: 'p-0.5',
@@ -62,7 +62,7 @@ const toggleGroupItemVariants = cva(
 	[
 		'flex items-center justify-center rounded select-none',
 		'text-base-500 hover:text-base-700',
-		'outline-none focus-visible:ring-2 focus-visible:ring-primary',
+		'focus-visible:ring-primary outline-none focus-visible:ring-2',
 		'data-pressed:bg-base-0 data-pressed:text-base-900 data-pressed:shadow-sm',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 		'transition-colors duration-100'

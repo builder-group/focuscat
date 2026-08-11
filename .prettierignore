@@ -1,3 +1,27 @@
-# Generated files
+# Dependencies
+**/node_modules/
+
+# Tooling
+**/.content-collections/
+**/.tanstack/
+**/.turbo/
+**/.vite/
+
+# Test artifacts
+**/coverage/
+
+# Build outputs
+**/.build/
+**/.output/
+**/build/
+**/dist/
+**/out/
+**/target/
+
+# Generated source
 **/*.gen.ts
-generated/
+**/gen/
+
+# Local files
+.todo
+.DS_Store

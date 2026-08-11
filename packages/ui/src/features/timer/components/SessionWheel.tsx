@@ -1,4 +1,4 @@
-import { useCombinedCompute, useCompute } from 'feature-react/state';
+import { useCompute } from 'feature-react/state';
 import { animate, motion, useMotionValue } from 'motion/react';
 import React from 'react';
 import { cn } from '@/lib';
@@ -9,12 +9,12 @@ export const SessionWheel: React.FC<TSessionWheelProps> = (props) => {
 	const { cx, windowSize = 10, itemHeight = 28, className } = props;
 	const sessionsBeforeLongBreak = useCompute(
 		cx.$config,
-		({ value }) => value.pomodoro.sessionsBeforeLongBreak
+		(value) => value.pomodoro.sessionsBeforeLongBreak
 	);
 
 	const y = useMotionValue(0);
 
-	const { value, isRunning } = useCombinedCompute(
+	const { value, isRunning } = useCompute(
 		[
 			cx.timer.$status,
 			cx.timer.$sessionType,
@@ -23,11 +23,11 @@ export const SessionWheel: React.FC<TSessionWheelProps> = (props) => {
 			cx.timer.$sessionsCompleted
 		] as const,
 		([
-			{ value: status = 'idle' },
-			{ value: sessionType = 'pomodoro:work' },
-			{ value: remainingSeconds = 0 },
-			{ value: totalSeconds = 0 },
-			{ value: sessionsCompleted = 0 }
+			status = 'idle',
+			sessionType = 'pomodoro:work',
+			remainingSeconds = 0,
+			totalSeconds = 0,
+			sessionsCompleted = 0
 		]) => {
 			if (status === 'idle') {
 				return { value: 0, isRunning: false };
@@ -39,7 +39,7 @@ export const SessionWheel: React.FC<TSessionWheelProps> = (props) => {
 			return { value, isRunning: status === 'running' };
 		},
 		[],
-		{ isEqual: (a, b) => a.value === b.value && a.isRunning === b.isRunning }
+		(a, b) => a.value === b.value && a.isRunning === b.isRunning
 	);
 
 	// Only recalculate items when whole session number changes

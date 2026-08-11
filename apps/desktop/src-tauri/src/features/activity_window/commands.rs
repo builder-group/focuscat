@@ -89,7 +89,9 @@ pub async fn get_window_activities(
 #[derive(Debug, Clone, Deserialize, specta::Type)]
 #[serde(rename_all = "camelCase")]
 pub struct GetWindowActivitiesParams {
+    #[specta(type = specta_typescript::Number)]
     pub started_after: f64,
+    #[specta(type = specta_typescript::Number)]
     pub started_before: f64,
     pub limit: Option<i32>,
 }

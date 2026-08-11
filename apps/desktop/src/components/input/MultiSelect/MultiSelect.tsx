@@ -112,11 +112,11 @@ Input.displayName = 'MultiSelect.Input';
 
 const inputVariants = cva(
 	[
-		'min-w-20 flex-1 border-none bg-transparent py-0.5 text-base-900',
+		'text-base-900 min-w-20 flex-1 border-none bg-transparent py-0.5',
 		// Collapse when unfocused with selections: invisible but still focusable via JS
-		'shadow-none ring-0 outline-none placeholder:text-base-400',
+		'placeholder:text-base-400 shadow-none ring-0 outline-none',
 		'data-collapsed:w-0 data-collapsed:min-w-0 data-collapsed:p-0',
-		'data-collapsed:opacity-0 data-collapsed:pointer-events-none'
+		'data-collapsed:pointer-events-none data-collapsed:opacity-0'
 	],
 	{
 		variants: {

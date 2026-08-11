@@ -1,5 +1,5 @@
 import { cn, Input, Switch, ToggleGroup } from '@repo/ui';
-import { type TForm } from 'feature-form';
+import { type TDirtyFeature, type TForm } from 'feature-form';
 import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { type specta } from '@/environment';
@@ -9,17 +9,11 @@ import { type TFocusProfileFormData } from '../FocusProfileCx';
 export const ActivationSettingGroup: React.FC<TActivationSettingGroupProps> = (props) => {
 	const { form, dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] } = props;
 
-	const activationEnabled = useCompute(
-		form.fields.activationEnabled,
-		({ value }) => value ?? false
-	);
+	const activationEnabled = useCompute(form.fields.activationEnabled, (value) => value ?? false);
 	const activationMode = useFeatureState(form.fields.activationMode);
-	const sessionTypeEnabled = useCompute(
-		form.fields.sessionTypeEnabled,
-		({ value }) => value ?? false
-	);
+	const sessionTypeEnabled = useCompute(form.fields.sessionTypeEnabled, (value) => value ?? false);
 	const sessionTypes = useFeatureState(form.fields.sessionTypes);
-	const scheduleEnabled = useCompute(form.fields.scheduleEnabled, ({ value }) => value ?? false);
+	const scheduleEnabled = useCompute(form.fields.scheduleEnabled, (value) => value ?? false);
 	const scheduleDays = useFeatureState(form.fields.scheduleDays);
 	const scheduleStartTime = useFeatureState(form.fields.scheduleStartTime);
 	const scheduleEndTime = useFeatureState(form.fields.scheduleEndTime);
@@ -169,6 +163,6 @@ export const ActivationSettingGroup: React.FC<TActivationSettingGroupProps> = (p
 };
 
 interface TActivationSettingGroupProps {
-	form: TForm<TFocusProfileFormData, []>;
+	form: TForm<TFocusProfileFormData, [TDirtyFeature<TFocusProfileFormData>]>;
 	dayLabels?: string[];
 }

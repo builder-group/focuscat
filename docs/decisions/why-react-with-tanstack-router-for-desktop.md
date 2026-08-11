@@ -23,13 +23,13 @@ Route definitions are co-located at the top of each file, making route configura
 
 ```tsx
 export const Route = createFileRoute('/')({
-	component: Home,
-	loader: async () => {
-		return {
-			message: 'Hello World'
-		};
-	},
-	errorComponent: ({ error }) => <div>{error.message}</div>
+  component: Home,
+  loader: async () => {
+    return {
+      message: 'Hello World'
+    };
+  },
+  errorComponent: ({ error }) => <div>{error.message}</div>
 });
 ```
 
@@ -38,18 +38,18 @@ Compare this to React Router's approach where you need to export components, loa
 ```tsx
 // React Router example - separate exports
 export async function loader() {
-	return {
-		message: 'Hello World'
-	};
+  return {
+    message: 'Hello World'
+  };
 }
 
 export function Component() {
-	const { message } = useLoaderData();
-	return <div>{message}</div>;
+  const { message } = useLoaderData();
+  return <div>{message}</div>;
 }
 
 export function ErrorBoundary({ error }) {
-	return <div>{error.message}</div>;
+  return <div>{error.message}</div>;
 }
 ```
 

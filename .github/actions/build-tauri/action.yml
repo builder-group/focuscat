@@ -33,7 +33,7 @@ runs:
       uses: ./.github/actions/setup-tauri
       with:
         targets: ${{ inputs.target }}
-        working-directory: ${{ inputs.app-directory }}/src-tauri
+        cargo-workspace: .
 
     - name: Build workspace dependencies
       shell: bash

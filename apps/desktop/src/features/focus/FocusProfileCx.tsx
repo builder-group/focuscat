@@ -1,14 +1,8 @@
 import { useMemoCleanup } from '@repo/ui';
-import {
-	bitwiseFlag,
-	createForm,
-	FormFieldReValidateMode,
-	FormFieldValidateMode,
-	type TForm
-} from 'feature-form';
+import { createForm, dirtyFeature, type TDirtyFeature, type TForm } from 'feature-form';
 import { createState } from 'feature-state';
 import React from 'react';
-import { createValidator } from 'validation-adapter';
+import * as v from 'valibot';
 import { specta } from '@/environment';
 import { toTuple } from '@/lib';
 
@@ -18,62 +12,31 @@ export class FocusProfileCx {
 	public readonly $profiles = createState<specta.FocusProfileDto[]>([]);
 	public readonly $activeProfileIds = createState<Set<number>>(new Set());
 	public readonly $editingId = createState<number | null>(null);
-	public readonly form: TForm<TFocusProfileFormData, []>;
+	public readonly form: TForm<TFocusProfileFormData, [TDirtyFeature<TFocusProfileFormData>]>;
 
 	constructor() {
 		this.form = createForm<TFocusProfileFormData>({
 			fields: {
 				name: {
 					defaultValue: '',
-					validator: createValidator([
-						{
-							key: 'min-length',
-							validate: (cx) => {
-								const value = cx.value as string;
-								if (value.trim().length < 3) {
-									cx.registerError({
-										code: 'min-length',
-										message: 'Name must be at least 3 characters'
-									});
-								}
-							}
-						},
-						{
-							key: 'unique',
-							validate: (cx) => {
-								const value = cx.value as string;
-								const editingId = this.$editingId.get();
-								const profiles = this.$profiles.get();
-								const isDuplicate = profiles.some(
+					validator: v.pipe(
+						v.string(),
+						v.check((value) => value.trim().length >= 3, 'Name must be at least 3 characters'),
+						v.check((value) => {
+							const editingId = this.$editingId.get();
+							return !this.$profiles
+								.get()
+								.some(
 									(profile) =>
 										profile.name.toLowerCase() === value.trim().toLowerCase() &&
 										profile.id !== editingId
 								);
-								if (isDuplicate) {
-									cx.registerError({
-										code: 'unique',
-										message: 'A profile with this name already exists'
-									});
-								}
-							}
-						}
-					])
+						}, 'A profile with this name already exists')
+					)
 				},
 				color: {
 					defaultValue: null,
-					validator: createValidator([
-						{
-							key: 'required',
-							validate: (cx) => {
-								if (cx.value == null) {
-									cx.registerError({
-										code: 'required',
-										message: 'Please select a color'
-									});
-								}
-							}
-						}
-					])
+					validator: v.custom<string | null>((value) => value != null, 'Please select a color')
 				},
 				enabled: {
 					defaultValue: true
@@ -112,11 +75,10 @@ export class FocusProfileCx {
 					defaultValue: '17:00'
 				}
 			},
-			validateMode: bitwiseFlag(FormFieldValidateMode.OnSubmit),
-			reValidateMode: bitwiseFlag(FormFieldReValidateMode.OnBlur, FormFieldReValidateMode.OnChange),
-			notifyOnStatusChange: false,
+			validateOn: ['submit'],
+			revalidateOn: ['blur', 'change'],
 			collectErrorMode: 'firstError'
-		});
+		}).with(dirtyFeature<TFocusProfileFormData>());
 		void this.load();
 	}
 
@@ -242,7 +204,7 @@ export class FocusProfileCx {
 
 	private setInitialValues(values: TFocusProfileFormData): void {
 		for (const key of Object.keys(values) as (keyof TFocusProfileFormData)[]) {
-			(this.form.fields[key] as { _intialValue: unknown })._intialValue = values[key];
+			this.form.fields[key].defaultValue = values[key];
 		}
 	}
 

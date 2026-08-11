@@ -13,7 +13,7 @@ import {
 } from '@repo/ui';
 import { createFileRoute } from '@tanstack/react-router';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import { useCombinedCompute, useFeatureState } from 'feature-react/state';
+import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { specta } from '@/environment';
 import { useSettingsCx } from '@/features/settings';
@@ -30,7 +30,7 @@ function RouteComponent() {
 	const timerCx = useTimerCx();
 	const catRef = React.useRef<TCatRef>(null);
 
-	const { isBreak, isOvertime, isRunning, displayTime } = useCombinedCompute(
+	const { isBreak, isOvertime, isRunning, displayTime } = useCompute(
 		[
 			timerCx.$status,
 			timerCx.$sessionType,
@@ -38,10 +38,10 @@ function RouteComponent() {
 			timerCx.$overtimeSeconds
 		] as const,
 		([
-			{ value: status = 'idle' },
-			{ value: sessionType = 'pomodoro:work' },
-			{ value: remainingSeconds = 0 },
-			{ value: overtimeSeconds = 0 }
+			status = 'idle',
+			sessionType = 'pomodoro:work',
+			remainingSeconds = 0,
+			overtimeSeconds = 0
 		]) => {
 			const isOvertime = overtimeSeconds > 0;
 			return {
@@ -52,13 +52,11 @@ function RouteComponent() {
 			};
 		},
 		[],
-		{
-			isEqual: (a, b) =>
-				a.isBreak === b.isBreak &&
-				a.isOvertime === b.isOvertime &&
-				a.isRunning === b.isRunning &&
-				a.displayTime === b.displayTime
-		}
+		(a, b) =>
+			a.isBreak === b.isBreak &&
+			a.isOvertime === b.isOvertime &&
+			a.isRunning === b.isRunning &&
+			a.displayTime === b.displayTime
 	);
 
 	// MARK: - Actions

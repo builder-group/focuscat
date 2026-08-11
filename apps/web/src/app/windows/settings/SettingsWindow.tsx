@@ -10,7 +10,7 @@ import type { TSettingsPanel } from './types';
 export const SettingsWindow: React.FC = () => {
 	const [activePanel, setActivePanel] = React.useState<TSettingsPanel>('app');
 	const windowCx = useWindowCx();
-	const isMobile = useCompute(windowCx.$breakpoint, ({ value }) => value === 'sm');
+	const isMobile = useCompute(windowCx.$breakpoint, (value) => value === 'sm');
 
 	return (
 		<div className="bg-base-0 flex h-full w-full flex-col">

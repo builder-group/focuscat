@@ -352,14 +352,7 @@ export interface TWindowConfig extends TWindow {
 }
 
 export type TWindowId =
-	| 'main'
-	| 'settings'
-	| 'activity'
-	| 'cat'
-	| 'discord'
-	| 'macos'
-	| 'spotify'
-	| 'github';
+	'main' | 'settings' | 'activity' | 'cat' | 'discord' | 'macos' | 'spotify' | 'github';
 export type TWindowVisibility = 'visible' | 'minimized' | 'closed';
 
 export interface TBounds {

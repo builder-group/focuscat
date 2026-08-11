@@ -1,8 +1,7 @@
 import { Button } from '@repo/ui';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { hasFormChanged } from 'feature-form';
 import { useForm } from 'feature-react/form';
-import { useCombinedCompute, useFeatureState } from 'feature-react/state';
+import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { FocusProfileForm, useFocusProfileCx } from '@/features/focus';
 import {
@@ -26,12 +25,12 @@ function RouteComponent() {
 	const profileCx = useFocusProfileCx();
 	const { form, handleSubmit } = useForm(profileCx.form);
 	const isSubmitting = useFeatureState(profileCx.form.isSubmitting);
-	const showInvalidState = useCombinedCompute(
-		[profileCx.form.isSubmitted, profileCx.form.isValid] as const,
-		([{ value: isSubmitted }, { value: isValid }]) => isSubmitted && !isValid,
+	const showInvalidState = useCompute(
+		[profileCx.form.isSubmitted, profileCx.form.status] as const,
+		([isSubmitted, status]) => isSubmitted && status.type === 'invalid',
 		[]
 	);
-	const isDirty = hasFormChanged(form);
+	const isDirty = useFeatureState(form.isDirty);
 
 	// MARK: - Actions
 
@@ -64,7 +63,9 @@ function RouteComponent() {
 		},
 		onInvalidSubmit: () => {
 			const errors = form.getErrors();
-			const firstInvalidKey = (['name', 'color'] as const).find((key) => errors[key]?.length);
+			const firstInvalidKey = (['name', 'color'] as const).find(
+				(key) => errors.fields[key]?.length
+			);
 			if (firstInvalidKey != null) {
 				document
 					.querySelector(`[data-field="${firstInvalidKey}"]`)

@@ -21,7 +21,9 @@ pub struct WindowActivityDto {
     pub browser_url: Option<String>,
     // Focus profile category at the time of recording (NULL = no active profile)
     pub category: Option<String>,
+    #[specta(type = specta_typescript::Number)]
     pub started_at: f64,
+    #[specta(type = specta_typescript::Number)]
     pub ended_at: f64,
 }
 

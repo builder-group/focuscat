@@ -51,11 +51,11 @@ export const NumberField: React.FC<TNumberFieldProps> = (props) => {
 
 const numberFieldButtonVariants = cva(
 	[
-		'flex items-center justify-center border border-base-200 select-none',
+		'border-base-200 flex items-center justify-center border select-none',
 		'bg-base-50 text-base-600 transition-colors duration-100',
 		'hover:bg-base-100 hover:text-base-900',
 		'active:bg-base-200',
-		'outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-primary',
+		'focus-visible:ring-primary outline-none focus-visible:z-10 focus-visible:ring-2',
 		'disabled:cursor-not-allowed disabled:opacity-50'
 	],
 	{
@@ -74,9 +74,9 @@ const numberFieldButtonVariants = cva(
 
 const numberFieldInputVariants = cva(
 	[
-		'border-y border-base-200 bg-transparent',
-		'text-center font-mono text-base-900 tabular-nums',
-		'outline-none focus:z-10 focus:ring-2 focus:ring-primary focus:-ring-offset-1'
+		'border-base-200 border-y bg-transparent',
+		'text-base-900 text-center font-mono tabular-nums',
+		'focus:ring-primary focus:-ring-offset-1 outline-none focus:z-10 focus:ring-2'
 	],
 	{
 		variants: {

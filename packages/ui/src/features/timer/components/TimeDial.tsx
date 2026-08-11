@@ -1,4 +1,4 @@
-import { useCombinedCompute, useFeatureState } from 'feature-react/state';
+import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { TriangleDownIcon } from '@/components';
 import { type TTimerViewCx } from '../TimerViewCx';
@@ -12,9 +12,9 @@ export const TimeDial: React.FC<TTimeDialProps> = (props) => {
 	const wasRunningRef = React.useRef(false);
 	const windUpTick = useWindUpTick(cx);
 
-	const { value, smooth } = useCombinedCompute(
+	const { value, smooth } = useCompute(
 		[cx.timer.$status, cx.timer.$remainingSeconds] as const,
-		([{ value: status = 'idle' }, { value: remainingSeconds = 0 }]) => {
+		([status = 'idle', remainingSeconds = 0]) => {
 			const isActive = status !== 'idle';
 			const isPreviewing = previewMinutes != null;
 
@@ -27,7 +27,7 @@ export const TimeDial: React.FC<TTimeDialProps> = (props) => {
 			};
 		},
 		[previewMinutes],
-		{ isEqual: (a, b) => a.value === b.value && a.smooth === b.smooth }
+		(a, b) => a.value === b.value && a.smooth === b.smooth
 	);
 
 	// MARK: - Actions

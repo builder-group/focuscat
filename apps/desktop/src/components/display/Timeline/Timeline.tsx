@@ -31,48 +31,40 @@ export const Timeline: React.FC<TTimelineProps> = (props) => {
 	);
 
 	// Apply zoom to inner container width and toggle scrollbar visibility
-	useSubscriber(
-		cx.$zoom,
-		({ value: zoom }) => {
-			const container = cx.containerRef.current;
-			const inner = innerRef.current;
-			if (container == null || inner == null) {
-				return;
-			}
+	useSubscriber(cx.$zoom, ({ value: zoom }) => {
+		const container = cx.containerRef.current;
+		const inner = innerRef.current;
+		if (container == null || inner == null) {
+			return;
+		}
 
-			inner.style.width = `${zoom * 100}%`;
+		inner.style.width = `${zoom * 100}%`;
 
-			if (zoom > 1) {
-				container.classList.add('overflow-x-auto');
-				container.classList.remove('overflow-hidden');
-			} else {
-				container.classList.remove('overflow-x-auto');
-				container.classList.add('overflow-hidden');
-			}
-		},
-		[cx]
-	);
+		if (zoom > 1) {
+			container.classList.add('overflow-x-auto');
+			container.classList.remove('overflow-hidden');
+		} else {
+			container.classList.remove('overflow-x-auto');
+			container.classList.add('overflow-hidden');
+		}
+	});
 
 	// Sync scroll position to DOM (e.g. after zoomAtPoint)
-	useSubscriber(
-		cx.$scrollLeft,
-		({ value: scrollLeft }) => {
-			const el = cx.containerRef.current;
-			if (el == null) {
-				return;
-			}
+	useSubscriber(cx.$scrollLeft, ({ value: scrollLeft }) => {
+		const el = cx.containerRef.current;
+		if (el == null) {
+			return;
+		}
 
-			if (Math.abs(el.scrollLeft - scrollLeft) > 1) {
-				cx.isProgrammaticScroll = true;
-				el.scrollLeft = scrollLeft;
-			}
+		if (Math.abs(el.scrollLeft - scrollLeft) > 1) {
+			cx.isProgrammaticScroll = true;
+			el.scrollLeft = scrollLeft;
+		}
 
-			requestAnimationFrame(() => {
-				cx.isProgrammaticScroll = false;
-			});
-		},
-		[cx]
-	);
+		requestAnimationFrame(() => {
+			cx.isProgrammaticScroll = false;
+		});
+	});
 
 	// Wheel handler for zoom and horizontal scroll
 	React.useEffect(() => {

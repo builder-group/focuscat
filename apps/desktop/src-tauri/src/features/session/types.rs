@@ -12,7 +12,9 @@ pub struct SessionSummaryDto {
     pub planned_seconds: u32,
     pub actual_seconds: Option<u32>,
     pub intention: Option<String>,
+    #[specta(type = specta_typescript::Number)]
     pub started_at: f64,
+    #[specta(type = Option<specta_typescript::Number>)]
     pub ended_at: Option<f64>,
 }
 
@@ -25,7 +27,9 @@ pub struct SessionDetailDto {
     pub planned_seconds: u32,
     pub actual_seconds: Option<u32>,
     pub intention: Option<String>,
+    #[specta(type = specta_typescript::Number)]
     pub started_at: f64,
+    #[specta(type = Option<specta_typescript::Number>)]
     pub ended_at: Option<f64>,
     pub events: Vec<SessionEventDto>,
     pub stats: SessionStatsDto,
@@ -35,6 +39,7 @@ pub struct SessionDetailDto {
 #[serde(rename_all = "camelCase")]
 pub struct SessionEventDto {
     pub event_type: String,
+    #[specta(type = specta_typescript::Number)]
     pub timestamp: f64,
     /// Extra data (e.g., seconds for Extended events)
     pub data: Option<SessionEventDataDto>,

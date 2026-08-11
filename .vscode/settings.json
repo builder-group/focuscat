@@ -1,12 +1,12 @@
 {
 	// Editor settings
+	"editor.rulers": [100],
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": false,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
 	"editor.wordWrap": "on",
-	"editor.minimap.sectionHeaderDetectionRegExp": "MARK:",
 
 	// Search settings
 	"search.exclude": {
@@ -14,36 +14,96 @@
 		"**/dist": true,
 		"**/target": true,
 		"**/.turbo": true,
+		"**/.output": true,
+		"**/.tanstack": true,
 		"**/_deprecated": true,
-		"**/routeTree.gen.ts": true
+		"**/*.gen.ts": true
 	},
 
 	// File settings
 	"files.associations": {
 		"*.scss": "postcss",
 		"*.ts": "typescript",
-		"*.tsconfig.json": "jsonc" // Allows comments in tsconfig.json
+		"*.tsconfig.json": "jsonc"
 	},
 	"files.watcherExclude": {
-		"**/routeTree.gen.ts": true
+		"**/*.gen.ts": true
 	},
 	"files.readonlyInclude": {
-		"**/routeTree.gen.ts": true
+		"**/*.gen.ts": true
 	},
 
 	// File nesting in explorer
 	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.expand": false,
 	"explorer.fileNesting.patterns": {
-		"*.ts": "${capture}.js, ${capture}.test.ts, ${capture}.md",
-		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.js, ${capture}.md",
-		"*.jsx": "${capture}.js, ${capture}.md, ${capture}.module.css",
-		"*.tsx": "${capture}.ts, ${capture}.stories.tsx, ${capture}.md, ${capture}.module.css",
-		".npmrc": ".nvmrc, .yarnrc.yml",
-		".gitignore": ".eslintignore, .prettierignore, .dockerignore",
-		"README.md": "CONTRIBUTING.md, CODE_OF_CONDUCT.md",
-		".eslintrc.js": ".eslintcache",
-		"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, pnpm-workspace.yaml, .pnp.cjs, .pnp.loader.mjs",
-		"tsconfig.json": "tsconfig.*.json"
+		"*.ts": "${capture}.js, ${capture}.d.ts, ${capture}.js.map, ${capture}.test.ts, ${capture}.spec.ts, ${capture}.test-d.ts, ${capture}.gen.ts, ${capture}.generated.ts, ${capture}.md",
+		"*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts, ${capture}.test.js, ${capture}.spec.js, ${capture}.md",
+		"*.tsx": "${capture}.ts, ${capture}.test.tsx, ${capture}.spec.tsx, ${capture}.css, ${capture}.module.css, ${capture}.scss, ${capture}.module.scss, ${capture}.md",
+		"*.jsx": "${capture}.js, ${capture}.test.jsx, ${capture}.spec.jsx, ${capture}.css, ${capture}.module.css, ${capture}.scss, ${capture}.module.scss, ${capture}.md",
+		".env.example": ".env, .env.*, .envrc",
+		".gitignore": ".gitattributes, .gitmodules, .prettierignore, .eslintignore, .dockerignore",
+		".npmrc": ".nvmrc, .node-version",
+		"README.md": "CONTRIBUTING.md, CODE_OF_CONDUCT.md, LICENSE",
+		"package.json": "package-lock.json, pnpm-lock.yaml, pnpm-workspace.yaml, yarn.lock, bun.lock, bun.lockb",
+		"tsconfig.json": "tsconfig.*.json",
+		"Cargo.toml": "Cargo.lock"
+	},
+
+	// JavaScript and TypeScript settings
+	"js/ts.tsdk.path": "./node_modules/typescript/lib",
+	"js/ts.tsdk.promptToUseWorkspaceVersion": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+			"source.organizeImports": "never"
+		}
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+			"source.organizeImports": "never"
+		}
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+			"source.organizeImports": "never"
+		}
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+			"source.organizeImports": "never"
+		}
+	},
+
+	// JSON settings
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+
+	// CSS settings
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[postcss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+
+	// Rust settings
+	"[rust]": {
+		"editor.defaultFormatter": "rust-lang.rust-analyzer"
 	},
 
 	// ESLint settings
@@ -54,30 +114,5 @@
 	],
 
 	// Tailwind CSS settings
-	"tailwindCSS.experimental.classRegex": [
-		["(?<=cva\\([\\s\\S]*?)[\"']([^\"']+)[\"']"],
-		["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-	],
-
-	// https://github.com/foxundermoon/vs-shell-format/issues/62
-	"[dockerfile]": {
-		"editor.formatOnSave": false
-	},
-	"shellformat.effectLanguages": [
-		"shellscript"
-		// ... excluding dockerfile
-	],
-
-	// Tauri settings
-	"recommendations": ["tauri-apps.tauri-vscode", "rust-lang.rust-analyzer"],
-
-	// Rust settings
-	"[rust]": {
-		"editor.defaultFormatter": "rust-lang.rust-analyzer"
-	},
-	"rust-analyzer.rename.allowExternalItems": true,
-	"rust-analyzer.runnableEnv": {
-		"ENV_ROOT_DIR": "${workspaceFolder}",
-		"GENERATE_IMAGES": "true"
-	}
+	"tailwindCSS.classFunctions": ["clsx", "cn", "cx", "cva"]
 }

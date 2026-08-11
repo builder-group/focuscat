@@ -9,39 +9,43 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: 🔍 CI
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run CI
         uses: ./.github/actions/ci
-        with:
-          app: desktop
 
   check-deploy:
     name: 🔍 Check Deploy Marker
     runs-on: ubuntu-latest
     needs: ci
+    timeout-minutes: 5
     outputs:
       should-deploy: ${{ steps.check.outputs.should-deploy }}
     steps:
       - name: Check deploy trigger
         id: check
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "should-deploy=true" >> "$GITHUB_OUTPUT"
             echo "✅ Manual trigger (workflow_dispatch)"
           else
-            COMMIT_MSG="${{ github.event.head_commit.message }}"
             if [[ "$COMMIT_MSG" == *"#patch"* ]] || [[ "$COMMIT_MSG" == *"#deploy"* ]]; then
-              echo "should-deploy=true" >> $GITHUB_OUTPUT
+              echo "should-deploy=true" >> "$GITHUB_OUTPUT"
               echo "✅ Deploy marker found in commit message"
             else
-              echo "should-deploy=false" >> $GITHUB_OUTPUT
+              echo "should-deploy=false" >> "$GITHUB_OUTPUT"
               echo "⏭️  No deploy marker found, skipping deployment"
             fi
           fi
@@ -51,12 +55,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-deploy
     if: needs.check-deploy.outputs.should-deploy == 'true'
+    timeout-minutes: 10
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.bump.outputs.version }}
       tag: ${{ steps.bump.outputs.tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -73,6 +80,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     needs: version-bump
     environment: release-signing
+    timeout-minutes: 75
     strategy:
       fail-fast: false
       matrix:
@@ -86,7 +94,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: develop
           fetch-depth: 0
@@ -118,11 +126,11 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ matrix.target }}" == "aarch64-apple-darwin" ]]; then
-            echo "suffix=aarch64" >> $GITHUB_OUTPUT
+            echo "suffix=aarch64" >> "$GITHUB_OUTPUT"
           elif [[ "${{ matrix.target }}" == "x86_64-apple-darwin" ]]; then
-            echo "suffix=x64" >> $GITHUB_OUTPUT
+            echo "suffix=x64" >> "$GITHUB_OUTPUT"
           else
-            echo "suffix=${{ matrix.target }}" >> $GITHUB_OUTPUT
+            echo "suffix=${{ matrix.target }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Rename updater artifacts with arch suffix
@@ -149,11 +157,13 @@ jobs:
         with:
           name: release-${{ steps.arch.outputs.suffix }}
           path: release-bundle/
+          if-no-files-found: error
 
   upload-to-release:
     name: 📤 Upload to release
     runs-on: ubuntu-latest
     needs: [version-bump, build]
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
@@ -179,13 +189,14 @@ jobs:
           draft: false
           prerelease: true
           files: release-artifacts/*
-          fail_on_unmatched_files: false
+          fail_on_unmatched_files: true
           overwrite_files: true
 
   updater-json:
     name: 📋 Generate Updater JSON
     runs-on: ubuntu-latest
     needs: [version-bump, upload-to-release]
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
@@ -195,23 +206,34 @@ jobs:
           VERSION: ${{ needs.version-bump.outputs.version }}
           TAG: ${{ needs.version-bump.outputs.tag }}
         run: |
-          REPO="builder-group/focuscat"
+          REPO="$GITHUB_REPOSITORY"
           BASE_URL="https://github.com/${REPO}/releases/download/${TAG}"
 
           # Download signature files from the release (retry up to 3 times with delay)
           for arch in aarch64 x64; do
+            signature_path="sig_${arch}.txt"
+            rm -f "$signature_path"
+
             for attempt in 1 2 3; do
-              if curl -sfL "${BASE_URL}/Focuscat_${arch}.app.tar.gz.sig" -o "sig_${arch}.txt"; then
+              if curl -sfL "${BASE_URL}/Focuscat_${arch}.app.tar.gz.sig" -o "$signature_path" && [ -s "$signature_path" ]; then
                 echo "✅ Downloaded sig for ${arch}"
                 break
               fi
-              echo "⏳ Attempt ${attempt}/3 failed for ${arch} sig, retrying in 10s..."
-              sleep 10
+
+              if [ "$attempt" -lt 3 ]; then
+                echo "⏳ Attempt ${attempt}/3 failed for ${arch} sig, retrying in 10s..."
+                sleep 10
+              fi
             done
+
+            if [ ! -s "$signature_path" ]; then
+              echo "❌ Failed to download signature for ${arch} after 3 attempts"
+              exit 1
+            fi
           done
 
-          SIG_AARCH64=$(cat sig_aarch64.txt 2>/dev/null || echo "")
-          SIG_X64=$(cat sig_x64.txt 2>/dev/null || echo "")
+          SIG_AARCH64=$(cat sig_aarch64.txt)
+          SIG_X64=$(cat sig_x64.txt)
           PUB_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           printf '{"version":"%s","pub_date":"%s","platforms":{"darwin-aarch64":{"signature":"%s","url":"%s"},"darwin-x86_64":{"signature":"%s","url":"%s"}}}' \
@@ -228,4 +250,4 @@ jobs:
         with:
           tag_name: ${{ needs.version-bump.outputs.tag }}
           files: latest.json
-          fail_on_unmatched_files: false
+          fail_on_unmatched_files: true

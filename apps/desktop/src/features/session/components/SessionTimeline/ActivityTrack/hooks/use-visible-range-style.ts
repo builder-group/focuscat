@@ -39,9 +39,9 @@ export function useVisibleRangeStyle(
 	React.useLayoutEffect(update, [update]);
 
 	// Reposition on zoom/scroll/resize (useLayoutEffect handles initial positioning)
-	useListener(cx.timelineCx.$zoom, update, [update]);
-	useListener(cx.timelineCx.$scrollLeft, update, [update]);
-	useListener(cx.timelineCx.$containerRect, update, [update]);
+	useListener(cx.timelineCx.$zoom, update);
+	useListener(cx.timelineCx.$scrollLeft, update);
+	useListener(cx.timelineCx.$containerRect, update);
 }
 
 interface TVisibleRangeStyleOptions {

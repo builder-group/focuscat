@@ -86,28 +86,20 @@ function RouteComponent() {
 
 	// MARK: - Effects
 
-	useListener(
-		timerViewCx.$previewMinutes,
-		({ value: minutes, prevValue: prevMinutes }) => {
-			if (minutes != null && Math.round(minutes) !== Math.round(prevMinutes ?? minutes + 1)) {
-				catRef.current?.tap();
-			}
-		},
-		[timerViewCx]
-	);
+	useListener(timerViewCx.$previewMinutes, ({ value: minutes, prevValue: prevMinutes }) => {
+		if (minutes != null && Math.round(minutes) !== Math.round(prevMinutes ?? minutes + 1)) {
+			catRef.current?.tap();
+		}
+	});
 
-	useListener(
-		timerViewCx.timer.$remainingSeconds,
-		() => {
-			if (
-				timerViewCx.timer.$status.get() === 'running' &&
-				timerViewCx.$previewMinutes.get() == null
-			) {
-				catRef.current?.tap();
-			}
-		},
-		[timerViewCx]
-	);
+	useListener(timerViewCx.timer.$remainingSeconds, () => {
+		if (
+			timerViewCx.timer.$status.get() === 'running' &&
+			timerViewCx.$previewMinutes.get() == null
+		) {
+			catRef.current?.tap();
+		}
+	});
 
 	// MARK: - UI
 

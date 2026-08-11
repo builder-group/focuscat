@@ -9,22 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as HelpIndexRouteImport } from './routes/help/index'
-import { Route as SitesPomodorocatIndexRouteImport } from './routes/sites.pomodorocat/index'
-import { Route as LegalTermsIndexRouteImport } from './routes/legal.terms/index'
-import { Route as LegalPrivacyIndexRouteImport } from './routes/legal.privacy/index'
 import { Route as HelpAppStoreIndexRouteImport } from './routes/help.app-store/index'
-import { Route as SitesPomodorocatSitemapDotxmlRouteImport } from './routes/sites.pomodorocat/sitemap[.]xml'
+import { Route as LegalPrivacyIndexRouteImport } from './routes/legal.privacy/index'
+import { Route as LegalTermsIndexRouteImport } from './routes/legal.terms/index'
+import { Route as SitesPomodorocatIndexRouteImport } from './routes/sites.pomodorocat/index'
 import { Route as SitesPomodorocatRobotsDottxtRouteImport } from './routes/sites.pomodorocat/robots[.]txt'
+import { Route as SitesPomodorocatSitemapDotxmlRouteImport } from './routes/sites.pomodorocat/sitemap[.]xml'
 import { Route as SitesPomodorocatBlogIndexRouteImport } from './routes/sites.pomodorocat.blog/index'
 import { Route as SitesPomodorocatBlogSlugIndexRouteImport } from './routes/sites.pomodorocat.blog.$slug/index'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -32,9 +32,9 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpIndexRoute = HelpIndexRouteImport.update({
@@ -42,14 +42,9 @@ const HelpIndexRoute = HelpIndexRouteImport.update({
   path: '/help/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitesPomodorocatIndexRoute = SitesPomodorocatIndexRouteImport.update({
-  id: '/sites/pomodorocat/',
-  path: '/sites/pomodorocat/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalTermsIndexRoute = LegalTermsIndexRouteImport.update({
-  id: '/legal/terms/',
-  path: '/legal/terms/',
+const HelpAppStoreIndexRoute = HelpAppStoreIndexRouteImport.update({
+  id: '/help/app-store/',
+  path: '/help/app-store/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LegalPrivacyIndexRoute = LegalPrivacyIndexRouteImport.update({
@@ -57,21 +52,26 @@ const LegalPrivacyIndexRoute = LegalPrivacyIndexRouteImport.update({
   path: '/legal/privacy/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HelpAppStoreIndexRoute = HelpAppStoreIndexRouteImport.update({
-  id: '/help/app-store/',
-  path: '/help/app-store/',
+const LegalTermsIndexRoute = LegalTermsIndexRouteImport.update({
+  id: '/legal/terms/',
+  path: '/legal/terms/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitesPomodorocatSitemapDotxmlRoute =
-  SitesPomodorocatSitemapDotxmlRouteImport.update({
-    id: '/sites/pomodorocat/sitemap.xml',
-    path: '/sites/pomodorocat/sitemap.xml',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const SitesPomodorocatIndexRoute = SitesPomodorocatIndexRouteImport.update({
+  id: '/sites/pomodorocat/',
+  path: '/sites/pomodorocat/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitesPomodorocatRobotsDottxtRoute =
   SitesPomodorocatRobotsDottxtRouteImport.update({
     id: '/sites/pomodorocat/robots.txt',
     path: '/sites/pomodorocat/robots.txt',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitesPomodorocatSitemapDotxmlRoute =
+  SitesPomodorocatSitemapDotxmlRouteImport.update({
+    id: '/sites/pomodorocat/sitemap.xml',
+    path: '/sites/pomodorocat/sitemap.xml',
     getParentRoute: () => rootRouteImport,
   } as any)
 const SitesPomodorocatBlogIndexRoute =
@@ -192,11 +192,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -206,11 +206,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help/': {
@@ -220,18 +220,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sites/pomodorocat/': {
-      id: '/sites/pomodorocat/'
-      path: '/sites/pomodorocat'
-      fullPath: '/sites/pomodorocat/'
-      preLoaderRoute: typeof SitesPomodorocatIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal/terms/': {
-      id: '/legal/terms/'
-      path: '/legal/terms'
-      fullPath: '/legal/terms/'
-      preLoaderRoute: typeof LegalTermsIndexRouteImport
+    '/help/app-store/': {
+      id: '/help/app-store/'
+      path: '/help/app-store'
+      fullPath: '/help/app-store/'
+      preLoaderRoute: typeof HelpAppStoreIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/legal/privacy/': {
@@ -241,18 +234,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalPrivacyIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help/app-store/': {
-      id: '/help/app-store/'
-      path: '/help/app-store'
-      fullPath: '/help/app-store/'
-      preLoaderRoute: typeof HelpAppStoreIndexRouteImport
+    '/legal/terms/': {
+      id: '/legal/terms/'
+      path: '/legal/terms'
+      fullPath: '/legal/terms/'
+      preLoaderRoute: typeof LegalTermsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sites/pomodorocat/sitemap.xml': {
-      id: '/sites/pomodorocat/sitemap.xml'
-      path: '/sites/pomodorocat/sitemap.xml'
-      fullPath: '/sites/pomodorocat/sitemap.xml'
-      preLoaderRoute: typeof SitesPomodorocatSitemapDotxmlRouteImport
+    '/sites/pomodorocat/': {
+      id: '/sites/pomodorocat/'
+      path: '/sites/pomodorocat'
+      fullPath: '/sites/pomodorocat/'
+      preLoaderRoute: typeof SitesPomodorocatIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sites/pomodorocat/robots.txt': {
@@ -260,6 +253,13 @@ declare module '@tanstack/react-router' {
       path: '/sites/pomodorocat/robots.txt'
       fullPath: '/sites/pomodorocat/robots.txt'
       preLoaderRoute: typeof SitesPomodorocatRobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sites/pomodorocat/sitemap.xml': {
+      id: '/sites/pomodorocat/sitemap.xml'
+      path: '/sites/pomodorocat/sitemap.xml'
+      fullPath: '/sites/pomodorocat/sitemap.xml'
+      preLoaderRoute: typeof SitesPomodorocatSitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sites/pomodorocat/blog/': {

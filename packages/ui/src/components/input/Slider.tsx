@@ -17,7 +17,7 @@ const sliderControlVariants = cva(['flex w-full touch-none items-center select-n
 });
 
 const sliderTrackVariants = cva(
-	['w-full rounded bg-base-200 shadow-[inset_0_0_0_1px] shadow-base-300 select-none'],
+	['bg-base-200 shadow-base-300 w-full rounded shadow-[inset_0_0_0_1px] select-none'],
 	{
 		variants: {
 			size: {
@@ -35,8 +35,8 @@ const sliderTrackVariants = cva(
 const sliderThumbVariants = cva(
 	[
 		'rounded-full bg-white shadow select-none',
-		'outline outline-base-300',
-		'has-focus-visible:outline-2 has-focus-visible:outline-primary'
+		'outline-base-300 outline',
+		'has-focus-visible:outline-primary has-focus-visible:outline-2'
 	],
 	{
 		variants: {

@@ -1,4 +1,4 @@
-import { useCombinedCompute, useFeatureState } from 'feature-react/state';
+import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { cn, formatTime, formatTimeOfDay } from '@/lib';
 import { type TTimerViewCx } from '../TimerViewCx';
@@ -7,19 +7,14 @@ export const TimeDisplay: React.FC<TTimeDisplayProps> = (props) => {
 	const { cx, className } = props;
 	const previewMinutes = useFeatureState(cx.$previewMinutes);
 
-	const { isOvertime, displaySeconds, displayStartTime, displayEndTime } = useCombinedCompute(
+	const { isOvertime, displaySeconds, displayStartTime, displayEndTime } = useCompute(
 		[
 			cx.timer.$status,
 			cx.timer.$remainingSeconds,
 			cx.timer.$overtimeSeconds,
 			cx.timer.$startedAt
 		] as const,
-		([
-			{ value: status = 'idle' },
-			{ value: remainingSeconds = 0 },
-			{ value: overtimeSeconds = 0 },
-			{ value: startedAt = null }
-		]) => {
+		([status = 'idle', remainingSeconds = 0, overtimeSeconds = 0, startedAt = null]) => {
 			const isRunning = status === 'running';
 			const isOvertime = remainingSeconds === 0 && overtimeSeconds > 0;
 			const displaySeconds = previewMinutes != null ? previewMinutes * 60 : remainingSeconds;
@@ -34,19 +29,17 @@ export const TimeDisplay: React.FC<TTimeDisplayProps> = (props) => {
 			return { isOvertime, displaySeconds, displayStartTime, displayEndTime };
 		},
 		[previewMinutes],
-		{
-			isEqual: (a, b) =>
-				a.isOvertime === b.isOvertime &&
-				a.displaySeconds === b.displaySeconds &&
-				a.displayStartTime.getTime() === b.displayStartTime.getTime() &&
-				Math.floor(a.displayEndTime.getTime() / 1000) ===
-					Math.floor(b.displayEndTime.getTime() / 1000)
-		}
+		(a, b) =>
+			a.isOvertime === b.isOvertime &&
+			a.displaySeconds === b.displaySeconds &&
+			a.displayStartTime.getTime() === b.displayStartTime.getTime() &&
+			Math.floor(a.displayEndTime.getTime() / 1000) ===
+				Math.floor(b.displayEndTime.getTime() / 1000)
 	);
 
-	const { totalWorked, overtimeSeconds, autoAdvanceCountdownSeconds } = useCombinedCompute(
+	const { totalWorked, overtimeSeconds, autoAdvanceCountdownSeconds } = useCompute(
 		[cx.timer.$totalSeconds, cx.timer.$overtimeSeconds, cx.$config] as const,
-		([{ value: totalSeconds = 0 }, { value: overtimeSeconds = 0 }, { value: config }]) => {
+		([totalSeconds = 0, overtimeSeconds = 0, config]) => {
 			let autoAdvanceCountdownSeconds: number | null = null;
 			if (overtimeSeconds > 0) {
 				if (cx.timer.mode === 'pomodoro' && config.pomodoro.autoAdvance) {
@@ -65,12 +58,10 @@ export const TimeDisplay: React.FC<TTimeDisplayProps> = (props) => {
 			};
 		},
 		[],
-		{
-			isEqual: (a, b) =>
-				a.totalWorked === b.totalWorked &&
-				a.overtimeSeconds === b.overtimeSeconds &&
-				a.autoAdvanceCountdownSeconds === b.autoAdvanceCountdownSeconds
-		}
+		(a, b) =>
+			a.totalWorked === b.totalWorked &&
+			a.overtimeSeconds === b.overtimeSeconds &&
+			a.autoAdvanceCountdownSeconds === b.autoAdvanceCountdownSeconds
 	);
 
 	// MARK: - UI

@@ -1,5 +1,5 @@
 import { formatDuration, isWorkSession } from '@repo/ui';
-import { useCombinedCompute, useCompute, useFeatureState } from 'feature-react/state';
+import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
 import { useSessionCx } from '@/features/session';
 import { useSettingsCx } from '@/features/settings';
@@ -13,9 +13,9 @@ export const FocusGoalView: React.FC = () => {
 	const baseFocusSeconds = useFeatureState(sessionCx.$todayFocusSeconds);
 	const goalSeconds = useCompute(
 		settingsCx.$appSettings,
-		({ value: settings }) => settings.goals.dailyGoalMinutes * 60
+		(settings) => settings.goals.dailyGoalMinutes * 60
 	);
-	const currentElapsed = useCombinedCompute(
+	const currentElapsed = useCompute(
 		[
 			timerCx.$sessionType,
 			timerCx.$status,
@@ -23,12 +23,7 @@ export const FocusGoalView: React.FC = () => {
 			timerCx.$remainingSeconds,
 			timerCx.$overtimeSeconds
 		],
-		([sessionTypeCx, statusCx, totalCx, remainingCx, overtimeCx]) => {
-			const sessionType = sessionTypeCx.value;
-			const status = statusCx.value;
-			const totalSeconds = totalCx.value;
-			const remainingSeconds = remainingCx.value;
-			const overtimeSeconds = overtimeCx.value;
+		([sessionType, status, totalSeconds, remainingSeconds, overtimeSeconds]) => {
 			return isWorkSession(sessionType) && status !== 'idle'
 				? totalSeconds - remainingSeconds + overtimeSeconds
 				: 0;

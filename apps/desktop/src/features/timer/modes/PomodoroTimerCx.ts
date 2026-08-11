@@ -6,7 +6,7 @@ import { BaseTimerCx } from './BaseTimerCx';
 export class PomodoroTimerCx extends BaseTimerCx implements TPomodoroCx {
 	public readonly mode = 'pomodoro' as const;
 
-	protected applyTimerUpdate(timer: specta.TimerDto): void {
+	protected override applyTimerUpdate(timer: specta.TimerDto): void {
 		const prevOvertime = this.$overtimeSeconds.get();
 		super.applyTimerUpdate(timer);
 		this._checkAutoAdvance(prevOvertime, timer.overtimeSeconds);

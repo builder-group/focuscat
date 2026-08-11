@@ -9,7 +9,7 @@ import { activitySessionConfig } from './config';
 export const ActivityWindow: React.FC = () => {
 	const windowCx = useWindowCx();
 	const sessionCx = useSessionCx();
-	const isMobile = useCompute(windowCx.$breakpoint, ({ value }) => value === 'sm');
+	const isMobile = useCompute(windowCx.$breakpoint, (value) => value === 'sm');
 
 	const [sessions, setSessions] = React.useState<TSessionRow[]>([]);
 	const [loading, setLoading] = React.useState(true);

@@ -1,5 +1,5 @@
 import { cn, useMemoCleanup } from '@repo/ui';
-import { useCombinedCompute, useListener } from 'feature-react/state';
+import { useCompute, useListener } from 'feature-react/state';
 import React from 'react';
 import { TimelineAxisCx, type TMarkerData } from './TimelineAxisCx';
 import type { TimelineCx } from './TimelineCx';
@@ -12,12 +12,12 @@ export const TimelineAxis: React.FC<TTimelineAxisProps> = (props) => {
 	}, [timelineCx]);
 
 	const markerRefs = React.useRef<Map<number, HTMLDivElement>>(new Map());
-	const markers = useCombinedCompute(
+	const markers = useCompute(
 		[cx.$markers, timelineCx.$visibleRange] as const,
-		([{ value: allMarkers = [] }, { value: range = { startMs: 0, endMs: Infinity } }]) =>
+		([allMarkers = [], range = { startMs: 0, endMs: Infinity }]) =>
 			allMarkers.filter((m) => m.ms >= range.startMs && m.ms <= range.endMs),
 		[cx, timelineCx],
-		{ isEqual: markersEqual }
+		markersEqual
 	);
 
 	// MARK: - Actions
@@ -50,8 +50,8 @@ export const TimelineAxis: React.FC<TTimelineAxisProps> = (props) => {
 	// MARK: - Effects
 
 	// Reposition on zoom/resize (ref callback handles initial positioning)
-	useListener(timelineCx.$zoom, updatePositions, [updatePositions]);
-	useListener(timelineCx.$containerRect, updatePositions, [updatePositions]);
+	useListener(timelineCx.$zoom, updatePositions);
+	useListener(timelineCx.$containerRect, updatePositions);
 
 	// MARK: - UI
 

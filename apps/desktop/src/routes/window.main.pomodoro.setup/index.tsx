@@ -35,7 +35,7 @@ function RouteComponent() {
 	const returnTarget = toFlowReturnTarget(search);
 	const upcomingFocusSessionType = useCompute(
 		timerCx.$sessionType,
-		({ value }) => (advance && isWorkSession(value) ? 'Break' : 'Focus'),
+		(value) => (advance && isWorkSession(value) ? 'Break' : 'Focus'),
 		[advance]
 	);
 

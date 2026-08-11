@@ -1,5 +1,5 @@
 import { ChevronsLeftRightIcon, ChevronsRightLeftIcon, cn, MinusIcon, XIcon } from '@repo/ui';
-import { useCombinedCompute, useCompute, useListener } from 'feature-react/state';
+import { useCompute, useListener } from 'feature-react/state';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 import {
@@ -28,25 +28,22 @@ export const DraggableWindow: React.FC<TDraggableWindowProps> = (props) => {
 	} = props;
 	const $window = windowCx.windows[windowId];
 
-	const isVisible = useCompute($window, ({ value }) => isWindowVisible(value));
-	const trafficLights = useCompute($window, ({ value }) => value.trafficLights);
-	const isMaximized = useCompute($window, ({ value }) => value.boundsBeforeMaximize != null);
-	const canToggleMaximize = useCombinedCompute(
+	const isVisible = useCompute($window, (value) => isWindowVisible(value));
+	const trafficLights = useCompute($window, (value) => value.trafficLights);
+	const isMaximized = useCompute($window, (value) => value.boundsBeforeMaximize != null);
+	const canToggleMaximize = useCompute(
 		[$window, windowCx.$containerRect],
-		([winCx, containerCx]) => {
-			const bounds = winCx.value.boundsBeforeMaximize;
+		([window, container]) => {
+			const bounds = window.boundsBeforeMaximize;
 			if (bounds == null) {
 				return true;
 			}
-			const container = containerCx.value;
 			return bounds.size.width <= container.width && bounds.size.height <= container.height;
 		}
 	);
-	const isFocused = useCompute(
-		windowCx.$focusedId,
-		({ value: focusedId }) => focusedId === windowId,
-		[windowId]
-	);
+	const isFocused = useCompute(windowCx.$focusedId, (focusedId) => focusedId === windowId, [
+		windowId
+	]);
 
 	const windowRef = React.useRef<HTMLDivElement>(null);
 	const layoutRef = React.useRef<Pick<TWindow, 'bounds' | 'zIndex'> | null>(null);
@@ -271,17 +268,13 @@ export const DraggableWindow: React.FC<TDraggableWindowProps> = (props) => {
 		};
 	}, []);
 
-	useListener(
-		$window,
-		({ value }) => {
-			const el = windowRef.current;
-			if (el != null) {
-				applyLayout(el, value.bounds, value.zIndex);
-			}
-			layoutRef.current = { bounds: value.bounds, zIndex: value.zIndex };
-		},
-		[$window, applyLayout]
-	);
+	useListener($window, ({ value }) => {
+		const el = windowRef.current;
+		if (el != null) {
+			applyLayout(el, value.bounds, value.zIndex);
+		}
+		layoutRef.current = { bounds: value.bounds, zIndex: value.zIndex };
+	});
 
 	// MARK: - UI
 

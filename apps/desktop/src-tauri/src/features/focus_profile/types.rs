@@ -114,6 +114,7 @@ pub struct FocusProfileDto {
     pub enabled: bool,
     pub categories: Vec<CategoryAssignmentDto>,
     pub activations: Vec<FocusProfileActivationDto>,
+    #[specta(type = specta_typescript::Number)]
     pub created_at: f64,
 }
 

@@ -1,4 +1,4 @@
-import { useCombinedCompute } from 'feature-react/state';
+import { useCompute } from 'feature-react/state';
 import React from 'react';
 import { cn } from '@/lib';
 import { type TPomodoroCx } from '../../modes';
@@ -9,13 +9,9 @@ import { TimerActionSlotsView } from '../TimerActionSlotsView';
 export const PomodoroTimerActions: React.FC<TProps> = (props) => {
 	const { cx, className } = props;
 
-	const { status, isBreak, isOvertime } = useCombinedCompute(
+	const { status, isBreak, isOvertime } = useCompute(
 		[cx.$status, cx.$sessionType, cx.$overtimeSeconds] as const,
-		([
-			{ value: status = 'idle' },
-			{ value: sessionType = 'pomodoro:work' },
-			{ value: overtimeSeconds = 0 }
-		]) => ({
+		([status = 'idle', sessionType = 'pomodoro:work', overtimeSeconds = 0]) => ({
 			status,
 			isBreak: isBreakSession(sessionType),
 			isOvertime: overtimeSeconds > 0

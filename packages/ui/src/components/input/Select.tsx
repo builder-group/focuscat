@@ -96,8 +96,8 @@ export const Select: React.FC<TSelectProps> = (props) => {
 
 const selectVariants = cva(
 	[
-		'inline-flex w-full items-center justify-between rounded-md border bg-base-50 text-base-900',
-		'select-none outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:-ring-offset-1',
+		'bg-base-50 text-base-900 inline-flex w-full items-center justify-between rounded-md border',
+		'focus-visible:ring-primary focus-visible:-ring-offset-1 outline-none select-none focus-visible:ring-2',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 		'data-popup-open:bg-base-100',
 		'transition-colors duration-100'

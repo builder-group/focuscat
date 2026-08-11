@@ -1,4 +1,4 @@
-import { createState, FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER } from 'feature-state';
+import { createState, missingStorageValue } from 'feature-state';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	VersionedLocalStorageInterface,
@@ -32,21 +32,21 @@ describe('VersionedLocalStorageInterface', () => {
 		it('should return FAILED when key is missing', () => {
 			const iface = new VersionedLocalStorageInterface<TTestValue>(createThreeVersionConfig());
 			const result = iface.load(STORAGE_KEY);
-			expect(result).toBe(FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER);
+			expect(result).toBe(missingStorageValue);
 		});
 
 		it('should return FAILED when stored value is invalid JSON', () => {
 			localStorage.setItem(STORAGE_KEY, 'not json');
 			const iface = new VersionedLocalStorageInterface<TTestValue>(createThreeVersionConfig());
 			const result = iface.load(STORAGE_KEY);
-			expect(result).toBe(FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER);
+			expect(result).toBe(missingStorageValue);
 		});
 
 		it('should return FAILED when stored value has no version', () => {
 			localStorage.setItem(STORAGE_KEY, JSON.stringify({ addedInV002: 'x' }));
 			const iface = new VersionedLocalStorageInterface<TTestValue>(createThreeVersionConfig());
 			const result = iface.load(STORAGE_KEY);
-			expect(result).toBe(FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER);
+			expect(result).toBe(missingStorageValue);
 		});
 
 		it('should return value when version equals latestVersion', () => {
@@ -98,7 +98,7 @@ describe('VersionedLocalStorageInterface', () => {
 			);
 			const iface = new VersionedLocalStorageInterface<TTestValue>(createThreeVersionConfig());
 			const result = iface.load(STORAGE_KEY);
-			expect(result).toBe(FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER);
+			expect(result).toBe(missingStorageValue);
 		});
 	});
 
@@ -131,7 +131,7 @@ describe('VersionedLocalStorageInterface', () => {
 			const deleted = iface.delete(STORAGE_KEY);
 			expect(deleted).toBe(true);
 			const loaded = iface.load(STORAGE_KEY);
-			expect(loaded).toBe(FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER);
+			expect(loaded).toBe(missingStorageValue);
 		});
 	});
 });

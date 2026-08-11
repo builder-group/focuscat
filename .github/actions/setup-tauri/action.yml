@@ -6,21 +6,29 @@ inputs:
     description: 'Rust targets to install (comma-separated)'
     required: false
     default: ''
-  working-directory:
-    description: 'Working directory for Rust cache'
+  cargo-workspace:
+    description: 'Cargo workspace root to cache'
     required: false
-    default: 'apps/desktop/src-tauri'
+    default: '.'
 
 runs:
   using: composite
   steps:
-    - name: Install Rust stable
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        targets: ${{ inputs.targets }}
+    - name: Install Rust toolchain
+      shell: bash
+      run: |
+        rustup toolchain install --no-self-update
+        if [ -n "${{ inputs.targets }}" ]; then
+          IFS=',' read -ra targets <<< "${{ inputs.targets }}"
+          for target in "${targets[@]}"; do
+            rustup target add "$target"
+          done
+        fi
+        rustup show active-toolchain
+        rustc --version --verbose
 
     - name: Rust cache
       uses: swatinem/rust-cache@v2
       with:
-        workspaces: ${{ inputs.working-directory }} -> target
+        workspaces: ${{ inputs.cargo-workspace }} -> target
         cache-on-failure: true

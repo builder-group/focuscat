@@ -16,27 +16,28 @@
 	"scripts": {
 		"build": "turbo run build",
 		"clean": "turbo run clean --force && shx rm -rf .turbo && shx rm -rf .vercel && shx rm -rf node_modules",
-		"format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
+		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,cjs,mjs,md,mdx,json,css,html}\"",
 		"install:clean": "pnpm clean && pnpm install && pnpm build",
 		"lint": "turbo run lint",
+		"lint:fix": "turbo run lint --force -- --fix",
 		"start:dev": "turbo run start:dev",
 		"test": "turbo run test",
-		"update:latest": "turbo run update:latest --force && pnpm update --latest '!eslint' '!@eslint/js' && pnpm build"
+		"update:latest": "turbo run update:latest --force --concurrency=1 && pnpm update --latest '!typescript' && pnpm build"
 	},
 	"devDependencies": {
-		"@blgc/config": "^0.0.40",
-		"@eslint/js": "^9.39.2",
-		"eslint": "^9.39.2",
-		"prettier": "^3.8.1",
-		"rollup": "^4.60.1",
-		"rollup-presets": "^0.0.26",
+		"@blgc/config": "^0.1.2",
+		"esbuild": "^0.28.2",
+		"eslint": "^10.8.1",
+		"prettier": "^3.9.6",
+		"rollup": "^4.62.4",
+		"rollup-presets": "^0.0.30",
 		"shx": "^0.4.0",
-		"turbo": "^2.8.21",
-		"typescript": "6.0.2",
-		"vite": "^8.0.3",
-		"vitest": "^4.1.2"
+		"turbo": "^2.10.9",
+		"typescript": "^6.0.3",
+		"vite": "^8.2.1",
+		"vitest": "^4.1.10"
 	},
-	"packageManager": "pnpm@10.33.0",
+	"packageManager": "pnpm@11.21.0",
 	"engines": {
 		"node": ">=24"
 	}

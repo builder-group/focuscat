@@ -41,8 +41,8 @@ export function useBlockStyle(
 	React.useLayoutEffect(update, [update]);
 
 	// Reposition on zoom/resize (useLayoutEffect handles initial positioning)
-	useListener(cx.timelineCx.$zoom, update, [update]);
-	useListener(cx.timelineCx.$containerRect, update, [update]);
+	useListener(cx.timelineCx.$zoom, update);
+	useListener(cx.timelineCx.$containerRect, update);
 }
 
 interface TBlockStyleOptions {

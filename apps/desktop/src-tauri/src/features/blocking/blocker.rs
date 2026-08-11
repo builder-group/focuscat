@@ -14,8 +14,8 @@ use crate::{
             },
             types::FocusProfileState,
         },
-        timer::types::TimerState,
         settings::types::{AppSettingsState, BlockThreshold},
+        timer::types::TimerState,
     },
 };
 use tauri::{AppHandle, Manager};

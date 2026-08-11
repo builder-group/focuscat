@@ -12,12 +12,12 @@ export const TrashDropZone: React.FC<TTrashDropZoneProps> = (props) => {
 
 	const { windowId, trashEnabled } = useCompute(
 		windowCx.$draggingWindowId,
-		({ value: windowId }) => ({
+		(windowId) => ({
 			windowId,
 			trashEnabled: windowId != null && trashableIds.includes(windowId)
 		}),
 		[trashableIds],
-		{ isEqual: (a, b) => a.windowId === b.windowId && a.trashEnabled === b.trashEnabled }
+		(a, b) => a.windowId === b.windowId && a.trashEnabled === b.trashEnabled
 	);
 
 	// MARK: - Actions
@@ -53,27 +53,19 @@ export const TrashDropZone: React.FC<TTrashDropZoneProps> = (props) => {
 	// MARK: - Effects
 
 	// On drag end: close window if its final bounds overlap the trash zone
-	useListener(
-		windowCx.$draggingWindowId,
-		({ value: id, prevValue }) => {
-			if (id == null && prevValue != null && trashableIds.includes(prevValue)) {
-				if (checkOverlap(prevValue)) {
-					windowCx.close(prevValue);
-				}
-				setIsOver(false);
+	useListener(windowCx.$draggingWindowId, ({ value: id, prevValue }) => {
+		if (id == null && prevValue != null && trashableIds.includes(prevValue)) {
+			if (checkOverlap(prevValue)) {
+				windowCx.close(prevValue);
 			}
-		},
-		[checkOverlap, trashableIds, windowCx]
-	);
+			setIsOver(false);
+		}
+	});
 
 	// While dragging a trashable window: recompute overlap on every position change
-	useListener(
-		trashEnabled && windowId != null ? windowCx.windows[windowId] : null,
-		() => {
-			setIsOver(checkOverlap(windowId!));
-		},
-		[checkOverlap, windowId, trashEnabled]
-	);
+	useListener(trashEnabled && windowId != null ? windowCx.windows[windowId] : null, () => {
+		setIsOver(checkOverlap(windowId!));
+	});
 
 	// MARK: - UI
 

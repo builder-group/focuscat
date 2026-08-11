@@ -1,21 +1,17 @@
-import { TEnforceFeatureConstraint, type TFeatureDefinition } from '@blgc/types/features';
 import {
-	FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER,
-	withStorage,
-	type TPersistFeature,
+	missingStorageValue,
+	storageFeature,
 	type TState,
+	type TStorageFeature,
 	type TStorageInterface
 } from 'feature-state';
 
-export function withVersionedLocalStorage<
-	GValue extends { version: string },
-	GFeatures extends TFeatureDefinition[]
->(
-	baseState: TEnforceFeatureConstraint<TState<GValue, GFeatures>, TState<GValue, GFeatures>, []>,
+export function withVersionedLocalStorage<GValue extends { version: string }>(
+	baseState: TState<GValue>,
 	key: string,
 	migrationConfig: TVersionedMigrationConfig<GValue>
-): TState<GValue, [TPersistFeature, ...GFeatures]> {
-	return withStorage(baseState, new VersionedLocalStorageInterface(migrationConfig), key);
+): TState<GValue, [TStorageFeature]> {
+	return baseState.with(storageFeature(new VersionedLocalStorageInterface(migrationConfig), key));
 }
 
 // MARK: - VersionedLocalStorageInterface
@@ -34,10 +30,10 @@ export class VersionedLocalStorageInterface<
 		return true;
 	}
 
-	public load(key: string): GValue | typeof FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER {
+	public load(key: string): GValue | typeof missingStorageValue {
 		const raw = localStorage.getItem(key);
 		if (raw == null) {
-			return FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER;
+			return missingStorageValue;
 		}
 
 		// Parse loaded storage item
@@ -45,16 +41,16 @@ export class VersionedLocalStorageInterface<
 		try {
 			value = JSON.parse(raw) as unknown;
 		} catch {
-			return FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER;
+			return missingStorageValue;
 		}
 		if (value == null || typeof value !== 'object') {
-			return FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER;
+			return missingStorageValue;
 		}
 
 		// Try to extract version from parsed value
 		const version = (value as { version?: string }).version ?? this._config.fallbackVersion;
 		if (version == null) {
-			return FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER;
+			return missingStorageValue;
 		}
 		let current = value as GValue;
 		let currentVersion: string = version;
@@ -63,7 +59,7 @@ export class VersionedLocalStorageInterface<
 		while (currentVersion !== this._config.latestVersion) {
 			const migration = this._config.migrations[currentVersion];
 			if (migration == null) {
-				return FAILED_TO_LOAD_FROM_STORAGE_IDENTIFIER;
+				return missingStorageValue;
 			}
 
 			// Apply migration

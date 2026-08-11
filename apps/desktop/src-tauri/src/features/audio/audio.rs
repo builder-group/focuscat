@@ -1,7 +1,7 @@
 use super::types::{AudioState, SoundId};
 use crate::common::path::get_resource_path;
 use crate::features::settings::types::AppSettingsState;
-use rodio::{mixer::Mixer, Decoder, OutputStreamBuilder, Sink};
+use rodio::{mixer::Mixer, Decoder, DeviceSinkBuilder, Player};
 use std::{collections::HashMap, io::Cursor, path::PathBuf, sync::Arc};
 use tauri::{App, AppHandle, Manager};
 
@@ -18,10 +18,10 @@ impl Audio {
     ///
     /// Returns `None` if no audio output device is available.
     pub fn new(app: &App) -> Option<Self> {
-        let stream = OutputStreamBuilder::open_default_stream().ok()?;
+        let stream = DeviceSinkBuilder::open_default_sink().ok()?;
 
-        // Leak the OutputStream to get a static reference to its mixer.
-        // The OutputStream must stay alive for the app lifetime, and leaking
+        // Leak the device sink to get a static reference to its mixer.
+        // The device sink must stay alive for the app lifetime, and leaking
         // gives us a 'static Mixer reference that's Send + Sync.
         let stream_ref: &'static _ = Box::leak(Box::new(stream));
         let mixer: &'static Mixer = stream_ref.mixer();
@@ -46,7 +46,7 @@ impl Audio {
             }
         };
 
-        let sink = Sink::connect_new(self.mixer);
+        let sink = Player::connect_new(self.mixer);
         sink.set_volume(volume);
 
         let cursor = Cursor::new(bytes);

@@ -3,9 +3,7 @@ import { CountdownTimerCx, PomodoroTimerCx, ProgressivePomodoroTimerCx } from '.
 
 export function useTimerCx<
 	GTimerCx extends CountdownTimerCx | PomodoroTimerCx | ProgressivePomodoroTimerCx =
-		| CountdownTimerCx
-		| PomodoroTimerCx
-		| ProgressivePomodoroTimerCx
+		CountdownTimerCx | PomodoroTimerCx | ProgressivePomodoroTimerCx
 >(): GTimerCx {
 	return useBaseTimerCx();
 }

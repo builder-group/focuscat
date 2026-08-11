@@ -1,5 +1,5 @@
 import { CheckIcon, cn, Input, Switch } from '@repo/ui';
-import { type TFormFieldStatusValue } from 'feature-form';
+import { type TValidationStatusValue } from 'feature-form';
 import { useForm } from 'feature-react/form';
 import { useCompute, useFeatureState } from 'feature-react/state';
 import React from 'react';
@@ -18,7 +18,7 @@ export const FocusProfileForm: React.FC<TFocusProfileFormProps> = (props) => {
 		]
 	} = props;
 	const profileCx = useFocusProfileCx();
-	const { form, register, status } = useForm(profileCx.form);
+	const { form, input, status } = useForm(profileCx.form);
 
 	const color = useFeatureState(form.fields.color);
 	const enabled = useFeatureState(form.fields.enabled);
@@ -46,7 +46,7 @@ export const FocusProfileForm: React.FC<TFocusProfileFormProps> = (props) => {
 					>
 						<Input
 							ref={inputRef}
-							{...register('name', true)}
+							{...input('name', { controlled: true })}
 							placeholder="e.g. Deep Work, Study..."
 							size="sm"
 							className={cn('w-40', nameError != null && 'border-red-500')}
@@ -103,6 +103,6 @@ interface TFocusProfileFormProps {
 	presetColors?: { label: string; value: string }[];
 }
 
-function computeError(cx: { value: TFormFieldStatusValue }): string | null {
-	return cx.value.type === 'INVALID' ? (cx.value.errors[0]?.message ?? null) : null;
+function computeError(status: TValidationStatusValue): string | null {
+	return status.type === 'invalid' ? (status.errors[0]?.message ?? null) : null;
 }

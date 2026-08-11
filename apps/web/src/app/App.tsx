@@ -13,15 +13,15 @@ export const App: React.FC<TAppProps> = (props) => {
 	const settingsCx = useSettingsCx();
 	const background = useCompute(
 		settingsCx.$appSettings,
-		({ value }) => appBackgrounds[value.appearance.background],
+		(value) => appBackgrounds[value.appearance.background],
 		[]
 	);
 	const [splashDone, setSplashDone] = React.useState(false);
 	const containerReady = useCompute(
 		windowCx.$containerRect,
-		({ value: rect }) => rect.width > 0 && rect.height > 0
+		(rect) => rect.width > 0 && rect.height > 0
 	);
-	const fireflyCount = useCompute(windowCx.$breakpoint, ({ value: breakpoint }) =>
+	const fireflyCount = useCompute(windowCx.$breakpoint, (breakpoint) =>
 		breakpoint === 'sm' ? 5 : breakpoint === 'md' ? 10 : 18
 	);
 
