@@ -1,5 +1,5 @@
 import { localStorageFeature } from 'feature-react/state';
-import { createState } from 'feature-state';
+import { createState, type TState, type TStorageFeature } from 'feature-state';
 import { TimelineCx } from '@/components';
 import type { specta } from '@/environment';
 import type { TViewMode } from '@/features/focus';
@@ -8,8 +8,8 @@ import { ActivityTrackCx, TActivityTrackCxThresholds } from './ActivityTrack';
 export class SessionTimelineCx {
 	public readonly timelineCx: TimelineCx;
 	public readonly activityTrackCx: ActivityTrackCx;
-	public readonly $granularity;
-	public readonly $viewMode;
+	public readonly $granularity: TState<number, [TStorageFeature]>;
+	public readonly $viewMode: TState<TViewMode, [TStorageFeature]>;
 	public readonly config: TSessionTimelineCxConfig;
 
 	public readonly eventPeriods: TEventPeriod[];
